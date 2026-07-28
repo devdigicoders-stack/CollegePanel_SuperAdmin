@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Building2, Users, Briefcase, User, PlayCircle, StopCircle } from 'lucide-react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
 Highcharts.setOptions({
@@ -41,10 +41,7 @@ function Dashboard() {
   const fetchDashboardStats = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('superadmin_token');
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/superadmin/dashboard-stats?year=${year}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axiosInstance.get(`/superadmin/dashboard-stats?year=${year}`);
       
       setStats(res.data.stats);
       setChartData(res.data.charts);

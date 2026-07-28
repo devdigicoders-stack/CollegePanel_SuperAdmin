@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, Edit, Plus, ChevronLeft, ChevronRight, Key, X, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
 function AllAdmins() {
@@ -29,10 +29,7 @@ function AllAdmins() {
 
   const fetchAdmins = async () => {
     try {
-      const token = localStorage.getItem('superadmin_token');
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/colleges`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axiosInstance.get('/colleges');
       
       const adminList = res.data.map(college => {
         const isAlsoPrincipal = 
@@ -75,15 +72,12 @@ function AllAdmins() {
 
     setIsResetting(true);
     try {
-      const token = localStorage.getItem('superadmin_token');
-      
       // We send it as FormData because the PUT endpoint expects upload.single() middleware compatibility
       const formData = new FormData();
       formData.append('password', newPassword);
 
-      await axios.put(`${import.meta.env.VITE_API_URL}/colleges/${resetTargetId}`, formData, {
+      await axiosInstance.put(`/colleges/${resetTargetId}`, formData, {
         headers: { 
-          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
         }
       });

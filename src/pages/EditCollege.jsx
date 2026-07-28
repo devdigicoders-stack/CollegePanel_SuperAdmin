@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Building2, Save, X, Upload } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
 function EditCollege() {
@@ -44,10 +44,7 @@ function EditCollege() {
 
   const fetchCollegeData = async () => {
     try {
-      const token = localStorage.getItem('superadmin_token');
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/colleges/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axiosInstance.get(`/colleges/${id}`);
       
       const col = res.data;
       setFormData({
@@ -117,7 +114,6 @@ function EditCollege() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem('superadmin_token');
       const submitData = new FormData();
 
       Object.keys(formData).forEach(key => {
@@ -132,9 +128,8 @@ function EditCollege() {
         submitData.append('collegeLogo', imageFile);
       }
 
-      const res = await axios.put(`${import.meta.env.VITE_API_URL}/colleges/${id}`, submitData, {
+      const res = await axiosInstance.put(`/colleges/${id}`, submitData, {
         headers: { 
-          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
         }
       });

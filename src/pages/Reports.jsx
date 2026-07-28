@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, Download, Filter, FileSpreadsheet, Building2, UserCheck, Users, AlertCircle } from 'lucide-react';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
@@ -33,10 +33,7 @@ function Reports() {
 
   const fetchColleges = async () => {
     try {
-      const token = localStorage.getItem('superadmin_token');
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/colleges`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axiosInstance.get('/colleges');
       setColleges(res.data);
     } catch (err) {
       console.error(err);
@@ -49,7 +46,6 @@ function Reports() {
     setGeneratedData([]); // Clear previous data
     
     try {
-      const token = localStorage.getItem('superadmin_token');
       let url = '';
       
       // Build query params
@@ -78,12 +74,12 @@ function Reports() {
         }
         setGeneratedData(filtered);
       } else if (activeReport === 'students') {
-        url = `${import.meta.env.VITE_API_URL}/reports/students${queryString}`;
-        const res = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+        url = `/reports/students${queryString}`;
+        const res = await axiosInstance.get(url);
         setGeneratedData(res.data);
       } else if (activeReport === 'admissions') {
-        url = `${import.meta.env.VITE_API_URL}/reports/admissions${queryString}`;
-        const res = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+        url = `/reports/admissions${queryString}`;
+        const res = await axiosInstance.get(url);
         setGeneratedData(res.data);
       }
 

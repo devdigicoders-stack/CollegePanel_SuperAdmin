@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, Plus, ChevronLeft, ChevronRight, Eye, Edit, Power, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
 function AllColleges() {
@@ -23,10 +23,7 @@ function AllColleges() {
 
   const fetchColleges = async () => {
     try {
-      const token = localStorage.getItem('superadmin_token');
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/colleges`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axiosInstance.get('/colleges');
       setColleges(res.data);
     } catch (err) {
       console.error(err);
@@ -38,10 +35,7 @@ function AllColleges() {
 
   const handleToggleStatus = async (id, currentStatus) => {
     try {
-      const token = localStorage.getItem('superadmin_token');
-      const res = await axios.patch(`${import.meta.env.VITE_API_URL}/colleges/${id}/status`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axiosInstance.patch(`/colleges/${id}/status`, {});
       
       setColleges(colleges.map(c => 
         c._id === id ? { ...c, isActive: res.data.isActive } : c
@@ -68,10 +62,7 @@ function AllColleges() {
             onClick={async () => {
               toast.dismiss(t.id);
               try {
-                const token = localStorage.getItem('superadmin_token');
-                await axios.delete(`${import.meta.env.VITE_API_URL}/colleges/${id}`, {
-                  headers: { Authorization: `Bearer ${token}` }
-                });
+                await axiosInstance.delete(`/colleges/${id}`);
                 setColleges(colleges.filter(c => c._id !== id));
                 toast.success('College deleted successfully');
               } catch (err) {

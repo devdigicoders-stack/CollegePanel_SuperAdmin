@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeOff, Camera } from 'lucide-react';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
 function Profile() {
@@ -23,10 +23,7 @@ function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const token = localStorage.getItem('superadmin_token');
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/superadmin/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axiosInstance.get('/superadmin/profile');
       setProfileData({
         name: res.data.name,
         email: res.data.email,
@@ -53,7 +50,6 @@ function Profile() {
   const handleUpdateProfile = async () => {
     try {
       setIsUpdating(true);
-      const token = localStorage.getItem('superadmin_token');
       
       const formData = new FormData();
       formData.append('name', profileData.name);
@@ -63,9 +59,8 @@ function Profile() {
         formData.append('profileImage', profileImageFile);
       }
 
-      const res = await axios.put(`${import.meta.env.VITE_API_URL}/superadmin/profile`, formData, {
+      const res = await axiosInstance.put('/superadmin/profile', formData, {
         headers: { 
-          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
         }
       });
@@ -91,12 +86,9 @@ function Profile() {
     
     try {
       setIsChangingPassword(true);
-      const token = localStorage.getItem('superadmin_token');
-      await axios.put(`${import.meta.env.VITE_API_URL}/superadmin/change-password`, {
+      await axiosInstance.put('/superadmin/change-password', {
         currentPassword: passwords.currentPassword,
         newPassword: passwords.newPassword
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Password changed successfully!');
       setPasswords({ currentPassword: '', newPassword: '', confirmPassword: '' });

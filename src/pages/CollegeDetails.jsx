@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import { 
   Users, User, Briefcase, Layout, 
   BookOpen, UserPlus, GraduationCap, Target,
@@ -51,18 +51,15 @@ function CollegeDetails() {
 
   const fetchCollegeDetails = async () => {
     try {
-      const token = localStorage.getItem('superadmin_token');
       
       // Fetch college info
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/colleges/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axiosInstance.get(`/colleges/${id}`);
       setCollege(res.data);
 
       // Fetch lengths for Overview Stats (Run them in parallel)
       const fetchLengths = async () => {
         const endpoints = ['students', 'teachers', 'employees', 'departments', 'leads'];
-        const reqs = endpoints.map(ep => axios.get(`${import.meta.env.VITE_API_URL}/colleges/${id}/details/${ep}`, { headers: { Authorization: `Bearer ${token}` } }));
+        const reqs = endpoints.map(ep => axiosInstance.get(`/colleges/${id}/details/${ep}`));
         const results = await Promise.all(reqs);
         
         const students = results[0].data;
@@ -95,10 +92,7 @@ function CollegeDetails() {
   const fetchTabData = async (tab) => {
     setTabLoading(true);
     try {
-      const token = localStorage.getItem('superadmin_token');
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/colleges/${id}/details/${tab.toLowerCase()}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axiosInstance.get(`/colleges/${id}/details/${tab.toLowerCase()}`);
       setTabData(res.data);
     } catch (err) {
       console.error(`Error fetching ${tab} data:`, err);

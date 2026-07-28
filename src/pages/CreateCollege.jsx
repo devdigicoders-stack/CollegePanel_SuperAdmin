@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Upload, Eye, EyeOff } from 'lucide-react';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
 function CreateCollege() {
@@ -62,7 +62,6 @@ function CreateCollege() {
 
     try {
       setIsSubmitting(true);
-      const token = localStorage.getItem('superadmin_token');
       
       const submitData = new FormData();
       Object.keys(formData).forEach(key => {
@@ -73,9 +72,8 @@ function CreateCollege() {
         submitData.append('collegeLogo', logoFile);
       }
 
-      await axios.post(`${import.meta.env.VITE_API_URL}/colleges`, submitData, {
+      await axiosInstance.post('/colleges', submitData, {
         headers: {
-          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
         }
       });

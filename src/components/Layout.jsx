@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { 
   Menu, Search, Maximize, User, ChevronDown, Home,
   Building2, FileText, 
-  PlayCircle, StopCircle, Plus, X, LogOut
+  PlayCircle, StopCircle, Plus, X, LogOut, AlertTriangle
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -19,33 +20,21 @@ const Layout = ({ children }) => {
 
   const isActive = (path) => location.pathname === path;
 
-  const handleLogout = () => {
-    toast((t) => (
-      <div className="flex flex-col gap-3">
-        <span className="font-semibold text-gray-800">Are you sure you want to logout?</span>
-        <div className="flex gap-2 justify-end">
-          <button
-            onClick={() => toast.dismiss(t.id)}
-            className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => {
-              toast.dismiss(t.id);
-              localStorage.removeItem('superadmin_token');
-              localStorage.removeItem('superadmin_info');
-              setIsSidebarOpen(false);
-              navigate('/login');
-              toast.success('Logged out successfully');
-            }}
-            className="px-3 py-1.5 text-sm font-medium bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-    ), { duration: Infinity });
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    localStorage.removeItem('superadmin_token');
+    localStorage.removeItem('superadmin_info');
+    setIsSidebarOpen(false);
+    setShowLogoutModal(false);
+    navigate('/login');
+    toast.success('Logged out successfully!');
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutModal(false);
   };
 
   return (
@@ -149,7 +138,7 @@ const Layout = ({ children }) => {
 
         {/* Logout Button - Fixed at bottom */}
         <div className="px-4 py-4 border-t border-gray-700/50 shrink-0">
-          <div onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-red-400 hover:text-white hover:bg-red-500/20 transition-all group">
+          <div onClick={handleLogoutClick} className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-red-400 hover:text-white hover:bg-red-500/20 transition-all group">
             <LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />
             <span className="text-[13px] font-semibold">Logout</span>
           </div>
@@ -202,6 +191,77 @@ const Layout = ({ children }) => {
           {children}
         </div>
       </main>
+
+      {/* Logout Confirmation Modal - Full Page */}
+      {showLogoutModal && (
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm"
+            onClick={handleLogoutCancel}
+          />
+          
+          {/* Modal */}
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+              
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-red-50/50">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                    <AlertTriangle size={20} className="text-red-600" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 text-[16px]">Confirm Logout</h3>
+                </div>
+                <button 
+                  onClick={handleLogoutCancel}
+                  className="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-lg"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="px-6 py-6">
+                <p className="text-[14px] text-gray-600 leading-relaxed">
+                  Are you sure you want to logout? You will need to login again to access the superadmin panel.
+                </p>
+              </div>
+
+              {/* Footer */}
+              <div className="flex gap-3 px-6 py-4 bg-gray-50 border-t border-gray-100">
+                <button 
+                  onClick={handleLogoutCancel}
+                  className="flex-1 px-4 py-2.5 text-[13px] font-semibold text-gray-700 bg-white hover:bg-gray-100 border border-gray-200 rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={handleLogoutConfirm}
+                  className="flex-1 px-4 py-2.5 text-[13px] font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors shadow-sm"
+                >
+                  Yes, Logout
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </>
+      )}
+
+      <style>{`
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes zoom-in-95 {
+          from { transform: scale(0.95); }
+          to { transform: scale(1); }
+        }
+        .animate-in {
+          animation: fade-in 0.2s ease-out, zoom-in-95 0.2s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
