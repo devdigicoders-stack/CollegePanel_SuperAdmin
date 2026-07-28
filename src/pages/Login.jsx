@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 function Login() {
   const navigate = useNavigate();
@@ -10,21 +12,35 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     if (!email || !password) {
-      setError('Please enter both email and password.');
+      toast.error('Please enter both email and password.');
       return;
     }
 
     setLoading(true);
-    // Simulate API call — replace with real auth logic later
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/superadmin/login`, {
+        email,
+        password
+      });
+
+      // Save token and info to local storage
+      localStorage.setItem('superadmin_token', response.data.token);
+      localStorage.setItem('superadmin_info', JSON.stringify(response.data));
+
+      toast.success('Login successful!');
       navigate('/dashboard');
-    }, 1000);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || 'Failed to login');
+      setError(err.response?.data?.message || 'Failed to login');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -4,13 +4,49 @@ import {
   Building2, FileText, 
   PlayCircle, StopCircle, Plus, X, LogOut
 } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const superadminInfo = JSON.parse(localStorage.getItem('superadmin_info') || '{}');
+  const avatarUrl = superadminInfo.profileImage 
+    ? `${import.meta.env.VITE_API_URL.replace('/api', '')}${superadminInfo.profileImage}`
+    : null;
 
   const isActive = (path) => location.pathname === path;
+
+  const handleLogout = () => {
+    toast((t) => (
+      <div className="flex flex-col gap-3">
+        <span className="font-semibold text-gray-800">Are you sure you want to logout?</span>
+        <div className="flex gap-2 justify-end">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              toast.dismiss(t.id);
+              localStorage.removeItem('superadmin_token');
+              localStorage.removeItem('superadmin_info');
+              setIsSidebarOpen(false);
+              navigate('/login');
+              toast.success('Logged out successfully');
+            }}
+            className="px-3 py-1.5 text-sm font-medium bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    ), { duration: Infinity });
+  };
 
   return (
     <div className="flex h-screen bg-[#f3f5f8] overflow-hidden">
@@ -75,22 +111,6 @@ const Layout = ({ children }) => {
                   </div>
                 </Link>
               </li>
-              <li>
-                <Link to="/active-colleges" onClick={() => setIsSidebarOpen(false)}>
-                  <div className={`flex items-center gap-3 px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/active-colleges') ? 'bg-[#5a4bda]/10 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
-                    <PlayCircle size={18} className={isActive('/active-colleges') ? 'text-[#8b5cf6]' : 'text-gray-400'} />
-                    <span className="font-medium">Active Colleges</span>
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <Link to="/inactive-colleges" onClick={() => setIsSidebarOpen(false)}>
-                  <div className={`flex items-center gap-3 px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/inactive-colleges') ? 'bg-[#5a4bda]/10 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
-                    <StopCircle size={18} className={isActive('/inactive-colleges') ? 'text-[#8b5cf6]' : 'text-gray-400'} />
-                    <span className="font-medium">Inactive Colleges</span>
-                  </div>
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -129,12 +149,10 @@ const Layout = ({ children }) => {
 
         {/* Logout Button - Fixed at bottom */}
         <div className="px-4 py-4 border-t border-gray-700/50 shrink-0">
-          <Link to="/login" onClick={() => setIsSidebarOpen(false)}>
-            <div className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-red-400 hover:text-white hover:bg-red-500/20 transition-all group">
-              <LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />
-              <span className="text-[13px] font-semibold">Logout</span>
-            </div>
-          </Link>
+          <div onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-red-400 hover:text-white hover:bg-red-500/20 transition-all group">
+            <LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />
+            <span className="text-[13px] font-semibold">Logout</span>
+          </div>
         </div>
       </aside>
 
@@ -156,25 +174,22 @@ const Layout = ({ children }) => {
           </div>
           
           <div className="flex items-center gap-4 sm:gap-5">
-            <div className="relative hidden md:block">
-              <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-              <input 
-                type="text" 
-                placeholder="Search here..." 
-                className="pl-10 pr-4 py-2 bg-gray-50/80 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent w-48 lg:w-64 transition-all"
-              />
-            </div>
-            
-            <button className="text-gray-400 hover:text-gray-600 transition-colors hidden sm:block">
-              <Maximize size={20} />
-            </button>
+
             
             <Link to="/profile" className="flex items-center gap-2 sm:gap-3 sm:pl-5 sm:border-l border-gray-200 cursor-pointer hover:bg-gray-50 p-1.5 rounded-lg transition-colors">
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border border-gray-200 shrink-0">
-                <img src="https://i.pravatar.cc/150?img=11" alt="Admin" className="w-full h-full object-cover" />
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Admin" className="w-full h-full object-cover" />
+                ) : (
+                  <img 
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(superadminInfo.name || 'Admin')}&background=5a4bda&color=fff`} 
+                    alt="Admin Placeholder" 
+                    className="w-full h-full object-cover" 
+                  />
+                )}
               </div>
               <div className="hidden sm:block">
-                <p className="text-[13px] font-bold text-gray-800 leading-tight">Super Admin</p>
+                <p className="text-[13px] font-bold text-gray-800 leading-tight">{superadminInfo.name}</p>
                 <p className="text-[11px] font-medium text-gray-500">Super Admin</p>
               </div>
               <ChevronDown size={16} className="text-gray-400 hidden sm:block ml-1"/>
