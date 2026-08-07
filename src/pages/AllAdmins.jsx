@@ -3,6 +3,7 @@ import { Search, Edit, Plus, ChevronLeft, ChevronRight, Key, X, Check } from 'lu
 import { Link } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
+import { TableSkeleton } from '../components/Skeleton';
 
 function AllAdmins() {
   const [admins, setAdmins] = useState([]);
@@ -188,9 +189,9 @@ function AllAdmins() {
         </div>
 
         {/* Table Container */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto bg-white rounded-xl shadow-sm border border-gray-100 p-1">
           {loading ? (
-            <div className="flex items-center justify-center h-full text-gray-500 text-sm">Loading admins...</div>
+            <div className="p-4"><TableSkeleton rows={8} columns={6} /></div>
           ) : (
             <table className="w-full min-w-[900px] text-left border-collapse">
               <thead>

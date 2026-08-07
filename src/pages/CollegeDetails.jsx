@@ -4,8 +4,8 @@ import axiosInstance from '../utils/axiosInstance';
 import { 
   Users, User, Briefcase, Layout, 
   BookOpen, UserPlus, GraduationCap, Target,
-  MapPin, AlertCircle, Eye, X, Mail, Phone, Calendar, Hash, UserCheck
-} from 'lucide-react';
+  MapPin, AlertCircle, Eye, X} from 'lucide-react';
+import { ProfileSkeleton, TableSkeleton } from '../components/Skeleton';
 
 const tabs = [
   'Overview', 'Students', 'Teachers', 'Departments', 'Attendance', 
@@ -38,6 +38,20 @@ function CollegeDetails() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Filters for Students tab
+  const [studentFilters, setStudentFilters] = useState({
+    branch: 'All Branches',
+    course: 'All Courses',
+    year: 'All Years',
+    session: 'All Sessions'
+  });
+  const [studentFilterOptions, setStudentFilterOptions] = useState({
+    branches: [],
+    courses: [],
+    years: [],
+    sessions: []
+  });
 
   useEffect(() => {
     fetchCollegeDetails();
@@ -92,8 +106,27 @@ function CollegeDetails() {
   const fetchTabData = async (tab) => {
     setTabLoading(true);
     try {
-      const res = await axiosInstance.get(`/colleges/${id}/details/${tab.toLowerCase()}`);
+      let params = {};
+      
+      if (tab === 'Students') {
+        if (studentFilters.branch && studentFilters.branch !== 'All Branches') params.branch = studentFilters.branch;
+        if (studentFilters.course && studentFilters.course !== 'All Courses') params.course = studentFilters.course;
+        if (studentFilters.year && studentFilters.year !== 'All Years') params.year = studentFilters.year;
+        if (studentFilters.session && studentFilters.session !== 'All Sessions') params.session = studentFilters.session;
+      }
+
+      const res = await axiosInstance.get(`/colleges/${id}/details/${tab.toLowerCase()}`, { params });
       setTabData(res.data);
+
+      if (tab === 'Students' && studentFilterOptions.branches.length === 0) {
+        const filterRes = await axiosInstance.get(`/colleges/${id}/details/students/filters`);
+        setStudentFilterOptions({
+          branches: filterRes.data.branches || [],
+          courses: filterRes.data.courses || [],
+          years: filterRes.data.years || [],
+          sessions: filterRes.data.sessions || []
+        });
+      }
     } catch (err) {
       console.error(`Error fetching ${tab} data:`, err);
       setTabData([]);
@@ -102,8 +135,14 @@ function CollegeDetails() {
     }
   };
 
+  useEffect(() => {
+    if (activeTab === 'Students') {
+      fetchTabData('Students');
+    }
+  }, [studentFilters]);
+
   if (loading) {
-    return <div className="flex items-center justify-center h-full text-gray-500">Loading details...</div>;
+    return <ProfileSkeleton />;
   }
 
   if (error || !college) {
@@ -136,11 +175,54 @@ function CollegeDetails() {
 
   // Helper to render dynamic tables
   const renderTable = () => {
-    if (tabLoading) return <div className="p-10 text-center text-gray-500">Loading {activeTab}...</div>;
+    if (tabLoading) return <div className="p-4 bg-white rounded-xl shadow-sm border border-gray-100"><TableSkeleton rows={8} columns={6} /></div>;
     if (!tabData || tabData.length === 0) return <div className="p-10 text-center text-gray-500">No data found for {activeTab}.</div>;
 
     let columns = [];
     let renderRow = (item, index) => null;
+    let filtersUI = null;
+
+    if (activeTab === 'Students') {
+      filtersUI = (
+        <div className="flex flex-wrap gap-3 mb-4 p-4 bg-gray-50/50 rounded-xl border border-gray-100">
+          <select 
+            value={studentFilters.branch} 
+            onChange={(e) => setStudentFilters(p => ({ ...p, branch: e.target.value }))}
+            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#5a4bda]"
+          >
+            <option>All Branches</option>
+            {studentFilterOptions.branches.map(b => <option key={b} value={b}>{b}</option>)}
+          </select>
+
+          <select 
+            value={studentFilters.course} 
+            onChange={(e) => setStudentFilters(p => ({ ...p, course: e.target.value }))}
+            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#5a4bda]"
+          >
+            <option>All Courses</option>
+            {studentFilterOptions.courses.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+
+          <select 
+            value={studentFilters.year} 
+            onChange={(e) => setStudentFilters(p => ({ ...p, year: e.target.value }))}
+            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#5a4bda]"
+          >
+            <option>All Years</option>
+            {studentFilterOptions.years.map(y => <option key={y} value={y}>{y}</option>)}
+          </select>
+
+          <select 
+            value={studentFilters.session} 
+            onChange={(e) => setStudentFilters(p => ({ ...p, session: e.target.value }))}
+            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#5a4bda]"
+          >
+            <option>All Sessions</option>
+            {studentFilterOptions.sessions.map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+        </div>
+      );
+    }
 
     switch (activeTab) {
       case 'Students':
@@ -285,6 +367,7 @@ function CollegeDetails() {
     return (
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
         <h3 className="text-[15px] font-bold text-gray-800 mb-6">{activeTab} Data</h3>
+        {filtersUI}
         <div className="overflow-auto max-h-[500px]">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead className="sticky top-0 bg-gray-50 z-10 border-b border-gray-200">
@@ -500,101 +583,242 @@ function CollegeDetails() {
 
       {/* Student Details Modal */}
       {selectedStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden border border-gray-100 flex flex-col max-h-[90vh]">
-            {/* Modal Header */}
-            <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#5a4bda] flex items-center justify-center text-white font-bold text-lg">
-                  {selectedStudent.studentName.charAt(0)}
-                </div>
-                <div>
-                  <h3 className="text-[17px] font-bold text-gray-800 leading-tight">{selectedStudent.studentName}</h3>
-                  <p className="text-[12px] text-gray-500 font-medium">{selectedStudent.course}</p>
-                </div>
-              </div>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl my-8">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-[#5a4bda] to-[#4536b3]">
+              <h3 className="text-lg font-bold text-white">Student Details</h3>
               <button 
                 onClick={() => setSelectedStudent(null)}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                className="text-white/80 hover:text-white transition-colors p-1"
               >
                 <X size={20} />
               </button>
             </div>
 
-            {/* Modal Body */}
-            <div className="p-6 overflow-y-auto">
-              {/* Badge Row */}
-              <div className="flex flex-wrap gap-3 mb-8">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-[12px] font-bold rounded-lg border border-blue-100">
-                  <Hash size={14} /> {selectedStudent.studentId}
-                </span>
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-bold rounded-lg border ${
-                  selectedStudent.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 
-                  selectedStudent.status === 'Graduated' ? 'bg-purple-50 text-purple-700 border-purple-100' : 'bg-red-50 text-red-700 border-red-100'
-                }`}>
-                  <UserCheck size={14} /> {selectedStudent.status}
-                </span>
+            {/* Content */}
+            <div className="p-6 max-h-[75vh] overflow-y-auto custom-scrollbar">
+              {/* Basic Info Card */}
+              <div className="bg-gradient-to-br from-[#5a4bda]/5 to-[#5a4bda]/10 rounded-xl p-6 mb-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-16 h-16 rounded-full bg-[#5a4bda] flex items-center justify-center text-white text-2xl font-bold border-2 border-[#5a4bda]/20 shadow-sm shrink-0">
+                    {selectedStudent.studentName?.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-gray-800">{selectedStudent.studentName}</h4>
+                    <p className="text-sm text-[#5a4bda] font-medium">{selectedStudent.course} {selectedStudent.branch ? `- ${selectedStudent.branch}` : ''}</p>
+                  </div>
+                  <div className="ml-auto">
+                    <span className={`px-4 py-2 rounded-full text-xs font-bold tracking-wide inline-block ${
+                      selectedStudent.status === 'Active' ? 'bg-emerald-100 text-emerald-700' :
+                      selectedStudent.status === 'Graduated' ? 'bg-purple-100 text-purple-700' : 'bg-red-100 text-red-700'
+                    }`}>
+                      {selectedStudent.status}
+                    </span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm mt-4 pt-4 border-t border-[#5a4bda]/10">
+                  <div>
+                    <span className="text-gray-500 font-medium">Enrollment No:</span>
+                    <span className="ml-2 font-bold text-gray-800">{selectedStudent.studentId}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 font-medium">Year:</span>
+                    <span className="ml-2 font-bold text-gray-800">{selectedStudent.year || 'N/A'}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 font-medium">Enrollment Date:</span>
+                    <span className="ml-2 font-bold text-gray-800">{selectedStudent.enrollmentDate ? new Date(selectedStudent.enrollmentDate).toLocaleDateString('en-GB') : 'N/A'}</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Data Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
-                <div className="flex items-start gap-3 p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                  <Mail size={18} className="text-gray-400 mt-0.5" />
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1">Email Address</p>
-                    <p className="text-[14px] font-semibold text-gray-800 break-all">{selectedStudent.email || 'N/A'}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                  <Phone size={18} className="text-gray-400 mt-0.5" />
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1">Phone Number</p>
-                    <p className="text-[14px] font-semibold text-gray-800">{selectedStudent.phone || 'N/A'}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                  <User size={18} className="text-gray-400 mt-0.5" />
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1">Gender</p>
-                    <p className="text-[14px] font-semibold text-gray-800">{selectedStudent.gender || 'N/A'}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                  <Calendar size={18} className="text-gray-400 mt-0.5" />
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1">Date of Birth</p>
-                    <p className="text-[14px] font-semibold text-gray-800">{selectedStudent.dob ? new Date(selectedStudent.dob).toLocaleDateString('en-GB') : 'N/A'}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 bg-gray-50/50 rounded-xl border border-gray-100 sm:col-span-2">
-                  <MapPin size={18} className="text-gray-400 mt-0.5" />
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1">Residential Address</p>
-                    <p className="text-[14px] font-semibold text-gray-800 leading-relaxed">{selectedStudent.address || 'N/A'}</p>
-                  </div>
-                </div>
+              {/* Details Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
-                <div className="flex items-start gap-3 p-4 bg-gray-50/50 rounded-xl border border-gray-100 sm:col-span-2">
-                  <BookOpen size={18} className="text-gray-400 mt-0.5" />
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1">Enrollment Date</p>
-                    <p className="text-[14px] font-semibold text-gray-800">{new Date(selectedStudent.enrollmentDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                {/* Personal Information */}
+                <div className="space-y-4">
+                  <h5 className="text-[13px] font-bold text-[#5a4bda] uppercase tracking-wider border-b border-gray-200 pb-2">Personal Information</h5>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Email</label>
+                      <p className="text-[13px] font-medium text-gray-800">{selectedStudent.email || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Mobile</label>
+                      <p className="text-[13px] font-medium text-gray-800">{selectedStudent.phone || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Date of Birth</label>
+                      <p className="text-[13px] font-medium text-gray-800">{selectedStudent.dob ? new Date(selectedStudent.dob).toLocaleDateString('en-GB') : 'N/A'}</p>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Gender</label>
+                      <p className="text-[13px] font-medium text-gray-800">{selectedStudent.gender || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Category</label>
+                      <p className="text-[13px] font-medium text-gray-800">{selectedStudent.category || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Religion</label>
+                      <p className="text-[13px] font-medium text-gray-800">{selectedStudent.religion || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Aadhaar No</label>
+                      <p className="text-[13px] font-medium text-gray-800">{selectedStudent.aadhaar || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Nationality</label>
+                      <p className="text-[13px] font-medium text-gray-800">{selectedStudent.nationality || 'Indian'}</p>
+                    </div>
+                  </div>
+
+                  {/* Addresses */}
+                  <div className="pt-2">
+                    <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Current Address</label>
+                    <p className="text-[13px] font-medium text-gray-800 leading-relaxed">{selectedStudent.address || 'N/A'}</p>
+                  </div>
+                  <div className="pt-1">
+                    <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Permanent Address</label>
+                    <p className="text-[13px] font-medium text-gray-800 leading-relaxed">{selectedStudent.permanentAddress ? `${selectedStudent.permanentAddress}, ${selectedStudent.permanentCity || ''}, ${selectedStudent.permanentPincode || ''}` : 'N/A'}</p>
+                  </div>
+
+                  {/* Portal Credentials */}
+                  <div className="pt-4 mt-4 border-t border-gray-100">
+                    <h6 className="text-[11px] font-semibold text-[#5a4bda] uppercase tracking-wider mb-3">Portal Credentials</h6>
+                    <div className="flex gap-4">
+                      <div className="flex-1 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">Username</label>
+                        <p className="text-[13px] font-bold text-gray-800">{selectedStudent.username || 'N/A'}</p>
+                      </div>
+                      <div className="flex-1 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">Password</label>
+                        <p className="text-[13px] font-bold text-gray-800">{selectedStudent.password || 'N/A'}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
+
+                <div className="space-y-8">
+                  {/* Parent / Guardian Information */}
+                  <div className="space-y-4">
+                    <h5 className="text-[13px] font-bold text-[#5a4bda] uppercase tracking-wider border-b border-gray-200 pb-2">Parent & Guardian Details</h5>
+                    
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-4">
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Father's Name</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.fatherName || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Father's Mobile</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.fatherMobile || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Mother's Name</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.motherName || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Mother's Mobile</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.motherMobile || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Guardian Name</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.guardianName || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Guardian Mobile</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.guardianMobile || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Parent Occupation</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.fatherOccupation || selectedStudent.motherOccupation || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Annual Income</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.annualIncome ? `₹${selectedStudent.annualIncome}` : 'N/A'}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Academic Information */}
+                  <div className="space-y-4">
+                    <h5 className="text-[13px] font-bold text-[#5a4bda] uppercase tracking-wider border-b border-gray-200 pb-2">Previous Education</h5>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="col-span-2">
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">School / College</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.prevSchool || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Board / University</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.board || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Passing Year</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.passingYear || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Qualification</label>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.qualification || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Percentage</label>
+                        <p className="text-[13px] font-bold text-gray-800">{selectedStudent.percentage ? `${selectedStudent.percentage}%` : 'N/A'}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Documents Section */}
+              <div className="mt-8">
+                <h5 className="text-[13px] font-bold text-[#5a4bda] uppercase tracking-wider border-b border-gray-200 pb-2 mb-4">Uploaded Documents</h5>
+                {(!selectedStudent.documents || selectedStudent.documents.length === 0) ? (
+                  <div className="text-center py-8 bg-gray-50 rounded-xl border border-gray-100 border-dashed">
+                    <p className="text-gray-500 text-[13px] font-medium">No documents uploaded for this student.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {selectedStudent.documents.map((doc, idx) => (
+                      <div key={idx} className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="text-[13px] font-bold text-gray-800 line-clamp-1" title={doc.name}>{doc.name}</p>
+                            <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${doc.status === 'Verified' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                              {doc.status || 'Pending'}
+                            </span>
+                          </div>
+                        </div>
+                        {doc.url ? (
+                          <a href={doc.url.startsWith('http') ? doc.url : `${import.meta.env.VITE_API_URL.replace('/api', '')}${doc.url.startsWith('/') ? doc.url : '/' + doc.url}`} target="_blank" rel="noopener noreferrer" className="mt-auto block w-full text-center px-3 py-2 text-[12px] font-bold text-[#5a4bda] bg-[#5a4bda]/5 border border-[#5a4bda]/20 rounded-lg hover:bg-[#5a4bda] hover:text-white transition-all">
+                            View Document
+                          </a>
+                        ) : (
+                          <div className="mt-auto block w-full text-center px-3 py-2 text-[12px] font-bold text-gray-400 bg-gray-50 border border-gray-100 rounded-lg cursor-not-allowed">
+                            Not Uploaded
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
-
-            {/* Modal Footer */}
-            <div className="px-6 py-4 border-t border-gray-100 flex justify-end bg-gray-50/50">
+            
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-gray-100 flex justify-end bg-gray-50/50 rounded-b-2xl">
               <button 
                 onClick={() => setSelectedStudent(null)}
-                className="px-5 py-2.5 bg-gray-800 text-white text-[13px] font-bold rounded-lg hover:bg-gray-700 transition-colors shadow-sm"
+                className="px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-[13px] font-bold hover:bg-gray-50 transition-colors shadow-sm"
               >
-                Close Profile
+                Close
               </button>
             </div>
           </div>

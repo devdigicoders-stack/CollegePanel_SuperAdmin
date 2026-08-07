@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, Users, Briefcase, User, PlayCircle, StopCircle } from 'lucide-react';
+import { Building2, User, PlayCircle, StopCircle } from 'lucide-react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import axiosInstance from '../utils/axiosInstance';
@@ -14,6 +14,8 @@ Highcharts.setOptions({
 });
 
 const HCR = HighchartsReact && HighchartsReact.default ? HighchartsReact.default : HighchartsReact;
+
+import { CardSkeleton } from '../components/Skeleton';
 
 function Dashboard() {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -142,8 +144,20 @@ function Dashboard() {
 
   if (loading && stats.totalColleges === 0) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#5a4bda]"></div>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
+          {[...Array(4)].map((_, i) => <CardSkeleton key={i} />)}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <div className="bg-white p-6 rounded-[16px] shadow-sm border border-gray-100 min-h-[300px] animate-pulse">
+            <div className="h-4 bg-gray-200 rounded w-1/3 mb-6"></div>
+            <div className="h-[240px] bg-gray-100 rounded w-full"></div>
+          </div>
+          <div className="bg-white p-6 rounded-[16px] shadow-sm border border-gray-100 min-h-[300px] animate-pulse">
+            <div className="h-4 bg-gray-200 rounded w-1/3 mb-6"></div>
+            <div className="h-[240px] bg-gray-100 rounded w-full"></div>
+          </div>
+        </div>
       </div>
     );
   }

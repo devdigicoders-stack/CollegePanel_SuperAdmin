@@ -3,6 +3,7 @@ import { Search, Plus, ChevronLeft, ChevronRight, Eye, Edit, Power, Trash2 } fro
 import { Link } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
+import { TableSkeleton } from '../components/Skeleton';
 
 function AllColleges() {
   const [colleges, setColleges] = useState([]);
@@ -171,9 +172,9 @@ function AllColleges() {
         </div>
 
         {/* Table Container */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto bg-white rounded-xl shadow-sm border border-gray-100 p-1">
           {loading ? (
-            <div className="flex items-center justify-center h-full text-gray-500 text-sm">Loading colleges...</div>
+            <div className="p-4"><TableSkeleton rows={8} columns={9} /></div>
           ) : (
             <table className="w-full min-w-[900px] text-left border-collapse">
               <thead>
@@ -210,7 +211,7 @@ function AllColleges() {
                     <td className="py-3 px-5 text-[13px] text-gray-600">{college.principalName || 'N/A'}</td>
                     <td className="py-3 px-5 text-[13px] text-gray-600">{college.city || 'N/A'}</td>
                     <td className="py-3 px-5 text-[13px] text-gray-600">{college.state || 'N/A'}</td>
-                    <td className="py-3 px-5 text-[13px] text-gray-600 text-center font-medium">0</td>
+                    <td className="py-3 px-5 text-[13px] text-gray-600 text-center font-medium">{college.studentsCount || 0}</td>
                     <td className="py-3 px-5 text-center">
                       <span className={`inline-flex items-center justify-center px-2.5 py-1 text-[11px] font-bold rounded-md ${
                         college.isActive ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-500'
