@@ -176,7 +176,6 @@ function CollegeDetails() {
   // Helper to render dynamic tables
   const renderTable = () => {
     if (tabLoading) return <div className="p-4 bg-white rounded-xl shadow-sm border border-gray-100"><TableSkeleton rows={8} columns={6} /></div>;
-    if (!tabData || tabData.length === 0) return <div className="p-10 text-center text-gray-500">No data found for {activeTab}.</div>;
 
     let columns = [];
     let renderRow = (item, index) => null;
@@ -378,11 +377,21 @@ function CollegeDetails() {
               </tr>
             </thead>
             <tbody>
-              {tabData.map((item, index) => (
-                <tr key={item._id} className="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
-                  {renderRow(item, index)}
+              {tabData.length === 0 ? (
+                <tr>
+                  <td colSpan={columns.length} className="py-16 text-center text-gray-500 font-medium">
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <p>No data found for this category</p>
+                    </div>
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                tabData.map((item, index) => (
+                  <tr key={item._id || index} className="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
+                    {renderRow(item, index)}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
