@@ -117,7 +117,7 @@ function Login() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-1">
+          {/* <div className="flex items-center justify-between pt-1">
             <div className="flex items-center">
               <input
                 id="remember_me"
@@ -134,7 +134,7 @@ function Login() {
                 Forgot Password?
               </a>
             </div>
-          </div>
+          </div> */}
 
           <div className="pt-2">
             <button
@@ -157,11 +157,11 @@ function Login() {
           </div>
         </form>
 
-        <div className="mt-10 mb-2 text-center">
+        {/* <div className="mt-10 mb-2 text-center">
           <p className="text-[11px] text-[#a0aec0]">
-            © 2024 Polytechnic ERP. All rights reserved.
+            © 2025 College ERP || All rights reserved.
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
