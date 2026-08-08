@@ -1,5 +1,8 @@
-import React, { useState, useRef } from 'react';
-import { Upload, Eye, EyeOff } from 'lucide-react';
+import React, { useState, useRef, useCallback } from 'react';
+import { Upload, Eye, EyeOff, MapPin, Search } from 'lucide-react';
+import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
+
+const libraries = ['places'];
 import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
@@ -7,6 +10,39 @@ function CreateCollege() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef(null);
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries: libraries
+  });
+
+  const [mapCenter, setMapCenter] = useState({ lat: 20.5937, lng: 78.9629 }); // Default to India center for view
+  const [autocomplete, setAutocomplete] = useState(null);
+
+  const onLoadAutocomplete = (autoC) => setAutocomplete(autoC);
+
+  const onPlaceChanged = () => {
+    if (autocomplete !== null) {
+      const place = autocomplete.getPlace();
+      if (place.geometry && place.geometry.location) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        setFormData(prev => ({ ...prev, lat, lng }));
+        setMapCenter({ lat, lng });
+      } else {
+        toast.error('Location details not found. Please try another place or click on the map.');
+      }
+    }
+  };
+  
+  const onMapClick = useCallback((e) => {
+    setFormData(prev => ({
+      ...prev,
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng()
+    }));
+  }, []);
 
   const [formData, setFormData] = useState({
     collegeName: '',
@@ -30,7 +66,10 @@ function CreateCollege() {
     adminEmail: '',
     adminMobile: '',
     username: '',
-    password: ''
+    password: '',
+    lat: '',
+    lng: '',
+    radius: '50'
   });
 
   const [logoFile, setLogoFile] = useState(null);
@@ -86,7 +125,8 @@ function CreateCollege() {
         affiliationNumber: '', establishedYear: '', contactNumber: '', website: '', officialEmail: '',
         address: '', city: '', district: '', state: '', pinCode: '',
         principalName: '', principalEmail: '', principalQualification: '',
-        adminName: '', adminEmail: '', adminMobile: '', username: '', password: ''
+        adminName: '', adminEmail: '', adminMobile: '', username: '', password: '',
+        lat: '', lng: '', radius: '50'
       });
       setLogoFile(null);
       setLogoPreview('');
@@ -199,32 +239,98 @@ function CreateCollege() {
         {/* Address Information */}
         <div className="bg-white p-6 sm:p-8 rounded-[16px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100">
           <h2 className="text-[16px] font-bold text-gray-800 mb-6">Address Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
-             <div className="lg:col-span-1">
-                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Address</label>
-                <input type="text" name="address" value={formData.address} onChange={handleInputChange} placeholder="Enter address" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
-             </div>
-             
-             <div>
-                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">City</label>
-                <input type="text" name="city" value={formData.city} onChange={handleInputChange} placeholder="Enter city" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
-             </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+            <div className="md:col-span-2">
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Complete Address</label>
+              <textarea name="address" value={formData.address} onChange={handleInputChange} rows="2" placeholder="Enter complete address" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all resize-none"></textarea>
+            </div>
+            
+            <div>
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">City</label>
+              <input type="text" name="city" value={formData.city} onChange={handleInputChange} placeholder="Enter city" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+            </div>
 
-             <div>
-                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">District</label>
-                <input type="text" name="district" value={formData.district} onChange={handleInputChange} placeholder="Enter district" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
-             </div>
+            <div>
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">District</label>
+              <input type="text" name="district" value={formData.district} onChange={handleInputChange} placeholder="Enter district" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+            </div>
 
-             <div>
-                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">State</label>
-                <input type="text" name="state" value={formData.state} onChange={handleInputChange} placeholder="Enter state" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
-             </div>
+            <div>
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">State</label>
+              <input type="text" name="state" value={formData.state} onChange={handleInputChange} placeholder="Enter state" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+            </div>
 
-             <div>
-                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">PIN Code</label>
-                <input type="text" name="pinCode" value={formData.pinCode} onChange={handleInputChange} placeholder="Enter pin code" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
-             </div>
+            <div>
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">PIN Code</label>
+              <input type="text" name="pinCode" value={formData.pinCode} onChange={handleInputChange} placeholder="Enter PIN code" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+            </div>
           </div>
+        </div>
+
+        {/* Geofence Information */}
+        <div className="bg-white p-6 sm:p-8 rounded-[16px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100">
+          <h2 className="text-[16px] font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <MapPin size={18} className="text-[#5a4bda]" /> Geofence (Attendance Location)
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5 mb-6">
+            <div>
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Latitude<span className="text-red-500">*</span></label>
+              <input type="number" step="any" name="lat" required value={formData.lat} onChange={handleInputChange} placeholder="e.g. 28.7041" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+            </div>
+            <div>
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Longitude<span className="text-red-500">*</span></label>
+              <input type="number" step="any" name="lng" required value={formData.lng} onChange={handleInputChange} placeholder="e.g. 77.1025" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+            </div>
+            <div>
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Allowed Radius (meters)<span className="text-red-500">*</span></label>
+              <input type="number" name="radius" required value={formData.radius} onChange={handleInputChange} placeholder="Default: 50" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+            </div>
+          </div>
+          
+          {isLoaded ? (
+            <div className="flex flex-col gap-4">
+              <Autocomplete onLoad={onLoadAutocomplete} onPlaceChanged={onPlaceChanged}>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Search className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search for a college or location..."
+                    className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent shadow-sm"
+                  />
+                </div>
+              </Autocomplete>
+
+              <div className="h-[300px] w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative">
+                <GoogleMap
+                  mapContainerStyle={{ width: '100%', height: '100%' }}
+                  center={formData.lat && formData.lng ? { lat: Number(formData.lat), lng: Number(formData.lng) } : mapCenter}
+                  zoom={formData.lat && formData.lng ? 16 : 5}
+                  onClick={onMapClick}
+                  options={{
+                    streetViewControl: false,
+                    mapTypeControl: false,
+                    fullscreenControl: false,
+                  }}
+                >
+                  {formData.lat && formData.lng && (
+                    <Marker position={{ lat: Number(formData.lat), lng: Number(formData.lng) }} />
+                  )}
+                </GoogleMap>
+                <div className="absolute top-2 left-2 bg-white px-3 py-1.5 rounded shadow text-[12px] font-semibold text-gray-700 z-10 pointer-events-none">
+                  Search above or click on the map to set location
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="h-[300px] w-full rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-500 text-[13px]">
+              Loading Map...
+            </div>
+          )}
+          
+          <p className="text-[11px] text-gray-500 mt-4">Employees will only be able to punch in/out if they are physically within the specified radius of the selected location.</p>
         </div>
 
         {/* Combined Principal & Admin Information */}
