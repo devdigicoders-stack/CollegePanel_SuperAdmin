@@ -10,7 +10,7 @@ import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const tabs = [
   'Overview', 'Students', 'Teachers', 'Departments', 
-  'Fees', 'Examinations', 'Hostel', 'Library', 'Employees', 'Leads', 'Activity'
+  'Hostel', 'Library', 'Employees'
 ];
 
 function CollegeDetails() {
@@ -78,7 +78,7 @@ function CollegeDetails() {
 
       // Fetch lengths for Overview Stats (Run them in parallel)
       const fetchLengths = async () => {
-        const endpoints = ['students', 'teachers', 'employees', 'departments', 'leads'];
+        const endpoints = ['students', 'teachers', 'employees', 'departments', 'leads', 'admissions'];
         const reqs = endpoints.map(ep => axiosInstance.get(`/colleges/${id}/details/${ep}`));
         const results = await Promise.all(reqs);
         
@@ -87,6 +87,7 @@ function CollegeDetails() {
         const employees = results[2].data;
         const departments = results[3].data;
         const leads = results[4].data;
+        const admissions = results[5].data;
 
         setOverviewData({
           totalStudents: students.length,
@@ -94,6 +95,7 @@ function CollegeDetails() {
           totalEmployees: employees.length,
           totalDepartments: departments.length,
           totalLeads: leads.length,
+          totalAdmissions: admissions.length,
           totalAlumni: students.filter(s => s.status === 'Graduated').length,
           activeStudents: students.filter(s => s.status === 'Active').length,
           dropouts: students.filter(s => s.status === 'Dropped').length
@@ -166,10 +168,9 @@ function CollegeDetails() {
     { title: 'Total Teachers', value: overviewData.totalTeachers, icon: User, color: 'text-orange-500', bg: 'bg-orange-50' },
     { title: 'Total Employees', value: overviewData.totalEmployees, icon: Briefcase, color: 'text-green-500', bg: 'bg-green-50' },
     { title: 'Total Departments', value: overviewData.totalDepartments, icon: Layout, color: 'text-purple-500', bg: 'bg-purple-50' },
-    { title: 'Total Courses', value: '4', icon: BookOpen, color: 'text-emerald-500', bg: 'bg-emerald-50' }, // Hardcoded as course schema doesn't exist yet
-    { title: `Total Admissions (${new Date().getFullYear()})`, value: overviewData.totalStudents, icon: UserPlus, color: 'text-blue-500', bg: 'bg-blue-50' },
-    { title: 'Total Alumni', value: overviewData.totalAlumni, icon: GraduationCap, color: 'text-amber-500', bg: 'bg-amber-50' },
-    { title: 'Total Leads', value: overviewData.totalLeads, icon: Target, color: 'text-red-500', bg: 'bg-red-50' },
+    { title: 'Total Courses', value: '4', icon: BookOpen, color: 'text-emerald-500', bg: 'bg-emerald-50' },
+    { title: `Total Admissions (${new Date().getFullYear()})`, value: overviewData.totalAdmissions, icon: UserPlus, color: 'text-blue-500', bg: 'bg-blue-50' },
+    { title: 'Total Alumni', value: overviewData.totalAlumni, icon: GraduationCap, color: 'text-amber-500', bg: 'bg-amber-50' }
   ];
 
   const quickStats = [
@@ -178,12 +179,89 @@ function CollegeDetails() {
     { title: 'Dropout Students', value: overviewData.dropouts, color: 'text-red-500' },
   ];
 
-  // Helper to render dynamic tables
+  const getColumns = () => {
+    switch (activeTab) {
+      case 'Students': return ['S.No', 'Student ID', 'Student Name', 'Course', 'Enrollment Date', 'Status', 'Action'];
+      case 'Teachers': return ['S.No', 'Name', 'Department', 'Qualification', 'Experience'];
+      case 'Departments': return ['S.No', 'Department Name', 'HOD', 'Total Faculty'];
+      case 'Hostel': return ['S.No', 'Block Name', 'Capacity', 'Warden'];
+      case 'Library': return ['S.No', 'Book Name', 'Author', 'Available Copies'];
+      case 'Employees': return ['S.No', 'Name', 'Role', 'Department'];
+      default: return [];
+    }
+  };
+
+  const renderRow = (item, index) => {
+    switch (activeTab) {
+      case 'Students': return (
+        <>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.studentId}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.studentName}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{item.course}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{new Date(item.enrollmentDate).toLocaleDateString('en-GB')}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-gray-800">{item.status}</td>
+          <td className="py-3 px-5 text-[13px]">
+            <button 
+              onClick={() => setSelectedStudent(item)}
+              className="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
+              title="View Full Profile"
+            >
+              <Eye size={16} />
+            </button>
+          </td>
+        </>
+      );
+      case 'Teachers': return (
+        <>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.name}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.department}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{item.qualification}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{item.experience}</td>
+        </>
+      );
+      case 'Departments': return (
+        <>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.name}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.hod}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{item.totalFaculty}</td>
+        </>
+      );
+      case 'Hostel': return (
+        <>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.blockName}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.capacity}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{item.warden}</td>
+        </>
+      );
+      case 'Library': return (
+        <>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.bookName}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.author}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{item.availableCopies}</td>
+        </>
+      );
+      case 'Employees': return (
+        <>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.name}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.role}</td>
+          <td className="py-3 px-5 text-[13px] text-gray-600">{item.department}</td>
+        </>
+      );
+      default: return null;
+    }
+  };
+
   const renderTable = () => {
     if (tabLoading) return <div className="p-4 bg-white rounded-xl shadow-sm border border-gray-100"><TableSkeleton rows={8} columns={6} /></div>;
 
-    let columns = [];
-    let renderRow = (item, index) => null;
+    const columns = getColumns();
+
     let filtersUI = null;
 
     if (activeTab === 'Students') {
@@ -228,134 +306,7 @@ function CollegeDetails() {
       );
     }
 
-    switch (activeTab) {
-      case 'Students':
-        columns = ['S.No', 'Student ID', 'Student Name', 'Course', 'Enrollment Date', 'Status', 'Action'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.studentId}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.studentName}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.course}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{new Date(item.enrollmentDate).toLocaleDateString('en-GB')}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-gray-800">{item.status}</td>
-            <td className="py-3 px-5 text-[13px]">
-              <button 
-                onClick={() => setSelectedStudent(item)}
-                className="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
-                title="View Full Profile"
-              >
-                <Eye size={16} />
-              </button>
-            </td>
-          </>
-        );
-        break;
-      case 'Teachers':
-        columns = ['S.No', 'Name', 'Department', 'Qualification', 'Experience'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.name}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.department}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.qualification}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.experience}</td>
-          </>
-        );
-        break;
-      case 'Departments':
-        columns = ['S.No', 'Department Name', 'HOD', 'Total Faculty'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.name}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.hod}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.totalFaculty}</td>
-          </>
-        );
-        break;
-      
-      case 'Fees':
-        columns = ['S.No', 'Student Name', 'Amount', 'Date', 'Status'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.studentName}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">₹{item.amount}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{new Date(item.date).toLocaleDateString('en-GB')}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.status}</td>
-          </>
-        );
-        break;
-      case 'Examinations':
-        columns = ['S.No', 'Exam Name', 'Date', 'Status'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.examName}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{new Date(item.date).toLocaleDateString('en-GB')}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.status}</td>
-          </>
-        );
-        break;
-      case 'Hostel':
-        columns = ['S.No', 'Block Name', 'Capacity', 'Warden'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.blockName}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.capacity}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.warden}</td>
-          </>
-        );
-        break;
-      case 'Library':
-        columns = ['S.No', 'Book Name', 'Author', 'Available Copies'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.bookName}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.author}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.availableCopies}</td>
-          </>
-        );
-        break;
-      case 'Employees':
-        columns = ['S.No', 'Name', 'Role', 'Department'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.name}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.role}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.department}</td>
-          </>
-        );
-        break;
-      case 'Leads':
-        columns = ['S.No', 'Student Name', 'Source', 'Status'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.studentName}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.source}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.status}</td>
-          </>
-        );
-        break;
-      case 'Activity':
-        columns = ['S.No', 'Activity Name', 'Date', 'Description'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.activityName}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{new Date(item.date).toLocaleDateString('en-GB')}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.description}</td>
-          </>
-        );
-        break;
-      default:
-        return null;
-    }
+
 
     return (
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -686,27 +637,31 @@ function CollegeDetails() {
                   {/* Addresses */}
                   <div className="pt-2">
                     <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Current Address</label>
-                    <p className="text-[13px] font-medium text-gray-800 leading-relaxed">{selectedStudent.address || 'N/A'}</p>
+                    <p className="text-[13px] font-medium text-gray-800 leading-relaxed">{selectedStudent.address || 'Not Provided'}</p>
                   </div>
-                  <div className="pt-1">
-                    <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Permanent Address</label>
-                    <p className="text-[13px] font-medium text-gray-800 leading-relaxed">{selectedStudent.permanentAddress ? `${selectedStudent.permanentAddress}, ${selectedStudent.permanentCity || ''}, ${selectedStudent.permanentPincode || ''}` : 'N/A'}</p>
-                  </div>
+                  {selectedStudent.permanentAddress && (
+                    <div className="pt-1">
+                      <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Permanent Address</label>
+                      <p className="text-[13px] font-medium text-gray-800 leading-relaxed">{`${selectedStudent.permanentAddress}, ${selectedStudent.permanentCity || ''}, ${selectedStudent.permanentPincode || ''}`}</p>
+                    </div>
+                  )}
 
                   {/* Portal Credentials */}
-                  <div className="pt-4 mt-4 border-t border-gray-100">
-                    <h6 className="text-[11px] font-semibold text-[#5a4bda] uppercase tracking-wider mb-3">Portal Credentials</h6>
-                    <div className="flex gap-4">
-                      <div className="flex-1 bg-gray-50 p-3 rounded-lg border border-gray-100">
-                        <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">Username</label>
-                        <p className="text-[13px] font-bold text-gray-800">{selectedStudent.username || 'N/A'}</p>
-                      </div>
-                      <div className="flex-1 bg-gray-50 p-3 rounded-lg border border-gray-100">
-                        <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">Password</label>
-                        <p className="text-[13px] font-bold text-gray-800">{selectedStudent.password || 'N/A'}</p>
+                  {(selectedStudent.username || selectedStudent.password) && (
+                    <div className="pt-4 mt-4 border-t border-gray-100">
+                      <h6 className="text-[11px] font-semibold text-[#5a4bda] uppercase tracking-wider mb-3">Portal Credentials</h6>
+                      <div className="flex gap-4">
+                        <div className="flex-1 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">Username</label>
+                          <p className="text-[13px] font-bold text-gray-800">{selectedStudent.username || 'Not Generated'}</p>
+                        </div>
+                        <div className="flex-1 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">Password</label>
+                          <p className="text-[13px] font-bold text-gray-800">{selectedStudent.password || 'Not Generated'}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 <div className="space-y-8">
@@ -717,35 +672,39 @@ function CollegeDetails() {
                     <div className="grid grid-cols-2 gap-x-4 gap-y-4">
                       <div>
                         <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Father's Name</label>
-                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.fatherName || 'N/A'}</p>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.fatherName || 'Not Provided'}</p>
                       </div>
                       <div>
                         <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Father's Mobile</label>
-                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.fatherMobile || 'N/A'}</p>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.fatherMobile || 'Not Provided'}</p>
                       </div>
                       <div>
                         <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Mother's Name</label>
-                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.motherName || 'N/A'}</p>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.motherName || 'Not Provided'}</p>
                       </div>
                       <div>
                         <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Mother's Mobile</label>
-                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.motherMobile || 'N/A'}</p>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.motherMobile || 'Not Provided'}</p>
                       </div>
-                      <div>
-                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Guardian Name</label>
-                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.guardianName || 'N/A'}</p>
-                      </div>
-                      <div>
-                        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Guardian Mobile</label>
-                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.guardianMobile || 'N/A'}</p>
-                      </div>
+                      {(selectedStudent.guardianName || selectedStudent.guardianMobile) && (
+                        <>
+                          <div>
+                            <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Guardian Name</label>
+                            <p className="text-[13px] font-medium text-gray-800">{selectedStudent.guardianName || 'Not Provided'}</p>
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Guardian Mobile</label>
+                            <p className="text-[13px] font-medium text-gray-800">{selectedStudent.guardianMobile || 'Not Provided'}</p>
+                          </div>
+                        </>
+                      )}
                       <div>
                         <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Parent Occupation</label>
-                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.fatherOccupation || selectedStudent.motherOccupation || 'N/A'}</p>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.fatherOccupation || selectedStudent.motherOccupation || 'Not Provided'}</p>
                       </div>
                       <div>
                         <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Annual Income</label>
-                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.annualIncome ? `₹${selectedStudent.annualIncome}` : 'N/A'}</p>
+                        <p className="text-[13px] font-medium text-gray-800">{selectedStudent.annualIncome ? `₹${selectedStudent.annualIncome}` : 'Not Provided'}</p>
                       </div>
                     </div>
                   </div>
