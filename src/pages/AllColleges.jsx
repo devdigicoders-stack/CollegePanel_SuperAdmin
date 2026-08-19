@@ -179,21 +179,21 @@ function AllColleges() {
             <table className="w-full min-w-[900px] text-left border-collapse">
               <thead>
                 <tr className="bg-gray-50/50 border-b border-gray-100">
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">Logo</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">College Name</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">College Code</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">Principal Name</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">City</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">State</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center">Students</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center">Status</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center">Action</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">Logo</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">College Name</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">College Code</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">Principal Name</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">City</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">State</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center whitespace-nowrap">Students</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center whitespace-nowrap">Status</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center whitespace-nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {paginatedColleges.length > 0 ? paginatedColleges.map((college) => (
                   <tr key={college._id} className="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
-                    <td className="py-3 px-5">
+                    <td className="py-3 px-5 whitespace-nowrap">
                       <div className="w-9 h-9 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center overflow-hidden shrink-0">
                         {college.collegeLogo ? (
                           <img src={`${import.meta.env.VITE_API_URL.replace('/api', '')}${college.collegeLogo}`} alt="Logo" className="w-full h-full object-cover" />
@@ -202,24 +202,24 @@ function AllColleges() {
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-5">
+                    <td className="py-3 px-5 whitespace-nowrap">
                       <Link to={`/college-details/${college._id}`} className="text-[13px] font-semibold text-gray-800 hover:text-[#5a4bda] hover:underline transition-colors">
                         {college.collegeName}
                       </Link>
                     </td>
-                    <td className="py-3 px-5 text-[13px] text-gray-600">{college.collegeCode}</td>
-                    <td className="py-3 px-5 text-[13px] text-gray-600">{college.principalName || 'N/A'}</td>
-                    <td className="py-3 px-5 text-[13px] text-gray-600">{college.city || 'N/A'}</td>
-                    <td className="py-3 px-5 text-[13px] text-gray-600">{college.state || 'N/A'}</td>
-                    <td className="py-3 px-5 text-[13px] text-gray-600 text-center font-medium">{college.studentsCount || 0}</td>
-                    <td className="py-3 px-5 text-center">
+                    <td className="py-3 px-5 text-[13px] text-gray-600 whitespace-nowrap">{college.collegeCode}</td>
+                    <td className="py-3 px-5 text-[13px] text-gray-600 whitespace-nowrap">{college.principalName || 'N/A'}</td>
+                    <td className="py-3 px-5 text-[13px] text-gray-600 whitespace-nowrap">{college.city || 'N/A'}</td>
+                    <td className="py-3 px-5 text-[13px] text-gray-600 whitespace-nowrap">{college.state || 'N/A'}</td>
+                    <td className="py-3 px-5 text-[13px] text-gray-600 text-center font-medium whitespace-nowrap">{college.studentsCount || 0}</td>
+                    <td className="py-3 px-5 text-center whitespace-nowrap">
                       <span className={`inline-flex items-center justify-center px-2.5 py-1 text-[11px] font-bold rounded-md ${
                         college.isActive ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-500'
                       }`}>
                         {college.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </td>
-                    <td className="py-3 px-5 text-center">
+                    <td className="py-3 px-5 text-center whitespace-nowrap">
                       <div className="flex items-center justify-center gap-2">
                         <Link to={`/college-details/${college._id}`}>
                           <button title="View Details" className="p-1.5 text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">

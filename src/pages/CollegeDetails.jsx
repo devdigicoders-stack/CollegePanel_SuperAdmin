@@ -6,6 +6,7 @@ import {
   BookOpen, UserPlus, GraduationCap, Target,
   MapPin, AlertCircle, Eye, X} from 'lucide-react';
 import { ProfileSkeleton, TableSkeleton } from '../components/Skeleton';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const tabs = [
   'Overview', 'Students', 'Teachers', 'Departments', 'Attendance', 
@@ -16,6 +17,11 @@ function CollegeDetails() {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('Overview');
   const [college, setCollege] = useState(null);
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+  });
   
   // States for dynamic stats
   const [overviewData, setOverviewData] = useState({
@@ -546,16 +552,21 @@ function CollegeDetails() {
                   </>
                 ) : 'No address provided'}
               </div>
-              <div className="flex-1 w-full bg-gray-100 rounded-xl min-h-[160px] relative overflow-hidden flex items-center justify-center border border-gray-200">
-                {import.meta.env.VITE_GOOGLE_MAPS_API_KEY ? (
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    loading="lazy"
-                    allowFullScreen
-                    src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(`${college.collegeName}, ${college.address || ''}, ${college.city || ''}, ${college.state || ''}`)}`}
-                  ></iframe>
+              <div className="flex-1 w-full bg-gray-100 rounded-xl min-h-[200px] relative overflow-hidden flex items-center justify-center border border-gray-200">
+                {isLoaded && college?.location?.lat && college?.location?.lng ? (
+                  <GoogleMap
+                    mapContainerStyle={{ width: '100%', height: '100%' }}
+                    center={{ lat: Number(college.location.lat), lng: Number(college.location.lng) }}
+                    zoom={16}
+                    options={{
+                      streetViewControl: false,
+                      mapTypeControl: true,
+                      mapTypeId: 'hybrid',
+                      fullscreenControl: false,
+                    }}
+                  >
+                    <Marker position={{ lat: Number(college.location.lat), lng: Number(college.location.lng) }} />
+                  </GoogleMap>
                 ) : (
                   <>
                     <div className="absolute inset-0 opacity-30" style={{
@@ -564,7 +575,7 @@ function CollegeDetails() {
                     }}></div>
                     <div className="z-10 flex flex-col items-center gap-2 text-gray-400">
                       <MapPin size={32} className="text-red-500" />
-                      <span className="text-[12px] font-bold">Map View</span>
+                      <span className="text-[12px] font-bold">Location not set</span>
                     </div>
                   </>
                 )}

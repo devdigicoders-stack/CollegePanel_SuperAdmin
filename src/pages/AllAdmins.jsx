@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Edit, Plus, ChevronLeft, ChevronRight, Key, X, Check } from 'lucide-react';
+import { Search, Edit, Plus, ChevronLeft, ChevronRight, Key, X, Check, Copy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
@@ -100,6 +100,17 @@ function AllAdmins() {
     }
   };
 
+  const handleCopyCredentials = (admin) => {
+    const textToCopy = `Hello ${admin.name},\n\nHere are your login credentials for the DCT CRM portal:\n\nAdmin Panel Link: https://college-panel-admin.vercel.app/login\nEmail ID: ${admin.email}\nPassword: ${admin.password}\n\nPlease keep this information secure.\n\nBest Regards,\nDCT Team`;
+    
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      toast.success('Credentials copied to clipboard!');
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+      toast.error('Failed to copy credentials');
+    });
+  };
+
   // Filtering Logic
   const filteredAdmins = admins.filter((admin) => {
     const matchesSearch = 
@@ -196,51 +207,58 @@ function AllAdmins() {
             <table className="w-full min-w-[900px] text-left border-collapse">
               <thead>
                 <tr className="bg-gray-50/50 border-b border-gray-100">
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">Profile</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">Admin Name</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">Email Address</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">Mobile Number</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">Assigned College</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">Password</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600">Role</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center">Status</th>
-                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center">Action</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">Profile</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">Admin Name</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">Email Address</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">Password</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">Mobile Number</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">Assigned College</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 whitespace-nowrap">Role</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center whitespace-nowrap">Status</th>
+                  <th className="py-4 px-5 text-[12px] font-bold text-gray-600 text-center whitespace-nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {paginatedAdmins.length > 0 ? paginatedAdmins.map((admin) => (
                   <tr key={admin.id} className="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
-                    <td className="py-3 px-5">
+                    <td className="py-3 px-5 whitespace-nowrap">
                       <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 border border-gray-200 bg-indigo-50">
                         <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(admin.name)}&background=random&color=fff&size=36`} alt="Profile" className="w-full h-full object-cover" />
                       </div>
                     </td>
-                    <td className="py-3 px-5">
+                    <td className="py-3 px-5 whitespace-nowrap">
                       <span className="text-[13px] font-semibold text-gray-800">{admin.name}</span>
                     </td>
-                    <td className="py-3 px-5 text-[13px] text-gray-600">{admin.email}</td>
-                    <td className="py-3 px-5 text-[13px] text-gray-600 font-medium">{admin.mobile}</td>
-                    <td className="py-3 px-5">
+                    <td className="py-3 px-5 text-[13px] text-gray-600 whitespace-nowrap">{admin.email}</td>
+                    <td className="py-3 px-5 text-[13px] font-mono text-gray-600 whitespace-nowrap">{admin.password}</td>
+                    <td className="py-3 px-5 text-[13px] text-gray-600 font-medium whitespace-nowrap">{admin.mobile}</td>
+                    <td className="py-3 px-5 whitespace-nowrap">
                       <Link to={`/college-details/${admin.collegeId}`} className="text-[13px] font-semibold text-[#5a4bda] hover:underline">
                         {admin.college}
                       </Link>
                     </td>
-                    <td className="py-3 px-5 text-[13px] font-mono text-gray-600">{admin.password}</td>
-                    <td className="py-3 px-5 text-[13px] text-gray-600">{admin.role}</td>
-                    <td className="py-3 px-5 text-center">
+                    <td className="py-3 px-5 text-[13px] text-gray-600 whitespace-nowrap">{admin.role}</td>
+                    <td className="py-3 px-5 text-center whitespace-nowrap">
                       <span className={`inline-flex items-center justify-center px-2.5 py-1 text-[11px] font-bold rounded-md ${
                         admin.status === 'Active' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-500'
                       }`}>
                         {admin.status}
                       </span>
                     </td>
-                    <td className="py-3 px-5 text-center">
+                    <td className="py-3 px-5 text-center whitespace-nowrap">
                       <div className="flex items-center justify-center gap-2">
                         <Link to={`/edit-college/${admin.collegeId}`}>
                           <button title="Edit Admin Details" className="p-1.5 text-gray-500 hover:text-indigo-600 bg-gray-100 hover:bg-indigo-50 rounded-lg transition-colors">
                             <Edit size={15} />
                           </button>
                         </Link>
+                        <button 
+                          onClick={() => handleCopyCredentials(admin)}
+                          title="Copy Credentials"
+                          className="p-1.5 text-blue-500 hover:text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                        >
+                          <Copy size={15} />
+                        </button>
                         <button 
                           onClick={() => handleOpenResetModal(admin.collegeId)}
                           title="Reset Password" 

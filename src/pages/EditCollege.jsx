@@ -226,6 +226,7 @@ function EditCollege() {
                   <option value="Government">Government</option>
                   <option value="Private">Private</option>
                   <option value="Aided">Aided</option>
+                  <option value="PPP">PPP</option>
                 </select>
               </div>
 
@@ -357,12 +358,23 @@ function EditCollege() {
                   onClick={onMapClick}
                   options={{
                     streetViewControl: false,
-                    mapTypeControl: false,
+                    mapTypeControl: true,
+                    mapTypeId: 'hybrid',
                     fullscreenControl: false,
                   }}
                 >
                   {formData.lat && formData.lng && (
-                    <Marker position={{ lat: Number(formData.lat), lng: Number(formData.lng) }} />
+                    <Marker 
+                      position={{ lat: Number(formData.lat), lng: Number(formData.lng) }} 
+                      draggable={true}
+                      onDragEnd={(e) => {
+                        setFormData(prev => ({
+                          ...prev,
+                          lat: e.latLng.lat(),
+                          lng: e.latLng.lng()
+                        }));
+                      }}
+                    />
                   )}
                 </GoogleMap>
                 <div className="absolute top-2 left-2 bg-white px-3 py-1.5 rounded shadow text-[12px] font-semibold text-gray-700 z-10 pointer-events-none">
