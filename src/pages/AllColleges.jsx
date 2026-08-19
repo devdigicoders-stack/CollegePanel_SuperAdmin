@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Plus, ChevronLeft, ChevronRight, Eye, Edit, Power, Trash2 } from 'lucide-react';
+import { Search, Plus, ChevronLeft, ChevronRight, Eye, Edit, Power, Trash2, Copy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
@@ -78,6 +78,26 @@ function AllColleges() {
         </div>
       </div>
     ), { duration: Infinity });
+  };
+
+  const handleCopyCredentials = (college) => {
+    const textToCopy = `Hello ${college.adminName || 'Admin'},
+
+Welcome to ${college.collegeName}! Your admin account has been created successfully.
+
+Here are your login credentials:
+Email ID: ${college.adminEmail}
+Password: ${college.rawPassword || 'Your chosen password'}
+
+Login to Admin Panel: https://college-panel-admin.vercel.app/
+
+Please login and change your password as soon as possible.`;
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      toast.success('Credentials copied to clipboard!');
+    }).catch(() => {
+      toast.error('Failed to copy credentials.');
+    });
   };
 
   // Get unique states for the filter dropdown
@@ -231,6 +251,13 @@ function AllColleges() {
                             <Edit size={15} />
                           </button>
                         </Link>
+                        <button 
+                          onClick={() => handleCopyCredentials(college)}
+                          title="Copy Credentials"
+                          className="p-1.5 text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
+                        >
+                          <Copy size={15} />
+                        </button>
                         <button 
                           onClick={() => handleToggleStatus(college._id, college.isActive)}
                           title={college.isActive ? 'Deactivate' : 'Activate'} 

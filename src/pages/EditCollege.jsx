@@ -35,8 +35,7 @@ function EditCollege() {
     username: '',
     password: '',
     lat: '',
-    lng: '',
-    radius: '50'
+    lng: ''
   });
 
   const [imageFile, setImageFile] = useState(null);
@@ -314,13 +313,13 @@ function EditCollege() {
           </div>
         </div>
 
-        {/* Geofence Information */}
+        {/* Location Information */}
         <div className="bg-white p-6 sm:p-8 rounded-[16px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100">
           <h2 className="text-[16px] font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <MapPin size={18} className="text-[#5a4bda]" /> Geofence (Attendance Location)
+            <MapPin size={18} className="text-[#5a4bda]" /> Location (Google Maps)
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mb-6">
             <div>
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Latitude<span className="text-red-500">*</span></label>
               <input type="number" step="any" name="lat" required value={formData.lat} onChange={handleInputChange} placeholder="e.g. 28.7041" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
@@ -328,10 +327,6 @@ function EditCollege() {
             <div>
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Longitude<span className="text-red-500">*</span></label>
               <input type="number" step="any" name="lng" required value={formData.lng} onChange={handleInputChange} placeholder="e.g. 77.1025" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
-            </div>
-            <div>
-              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Allowed Radius (meters)<span className="text-red-500">*</span></label>
-              <input type="number" name="radius" required value={formData.radius} onChange={handleInputChange} placeholder="Default: 50" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
             </div>
           </div>
           
@@ -353,17 +348,17 @@ function EditCollege() {
               <div className="h-[300px] w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative">
                 <GoogleMap
                   mapContainerStyle={{ width: '100%', height: '100%' }}
-                  center={formData.lat && formData.lng ? { lat: Number(formData.lat), lng: Number(formData.lng) } : mapCenter}
-                  zoom={formData.lat && formData.lng ? 16 : 5}
+                  center={formData.lat !== '' && formData.lng !== '' ? { lat: Number(formData.lat), lng: Number(formData.lng) } : mapCenter}
+                  zoom={formData.lat !== '' && formData.lng !== '' ? 16 : 5}
                   onClick={onMapClick}
                   options={{
                     streetViewControl: false,
                     mapTypeControl: true,
-                    mapTypeId: 'hybrid',
+                    mapTypeId: 'satellite',
                     fullscreenControl: false,
                   }}
                 >
-                  {formData.lat && formData.lng && (
+                  {formData.lat !== '' && formData.lng !== '' && (
                     <Marker 
                       position={{ lat: Number(formData.lat), lng: Number(formData.lng) }} 
                       draggable={true}
@@ -387,8 +382,6 @@ function EditCollege() {
               Loading Map...
             </div>
           )}
-          
-          <p className="text-[11px] text-gray-500 mt-4">Employees will only be able to punch in/out if they are physically within the specified radius of the selected location.</p>
         </div>
 
         {/* Combined Principal & Admin Information */}

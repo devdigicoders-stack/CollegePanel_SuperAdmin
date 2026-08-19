@@ -9,7 +9,7 @@ import { ProfileSkeleton, TableSkeleton } from '../components/Skeleton';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const tabs = [
-  'Overview', 'Students', 'Teachers', 'Departments', 'Attendance', 
+  'Overview', 'Students', 'Teachers', 'Departments', 
   'Fees', 'Examinations', 'Hostel', 'Library', 'Employees', 'Leads', 'Activity'
 ];
 
@@ -176,7 +176,6 @@ function CollegeDetails() {
     { title: 'Active Students', value: overviewData.activeStudents, color: 'text-emerald-500' },
     { title: 'Passed Out Students', value: overviewData.totalAlumni, color: 'text-blue-500' },
     { title: 'Dropout Students', value: overviewData.dropouts, color: 'text-red-500' },
-    { title: "Today's Attendance", value: 'N/A', color: 'text-amber-500' },
   ];
 
   // Helper to render dynamic tables
@@ -275,18 +274,7 @@ function CollegeDetails() {
           </>
         );
         break;
-      case 'Attendance':
-        columns = ['S.No', 'Date', 'Present', 'Total', 'Status'];
-        renderRow = (item, index) => (
-          <>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-            <td className="py-3 px-5 text-[13px] font-semibold text-gray-800">{new Date(item.date).toLocaleDateString('en-GB')}</td>
-            <td className="py-3 px-5 text-[13px] text-emerald-600 font-bold">{item.present}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.total}</td>
-            <td className="py-3 px-5 text-[13px] text-gray-600">{item.status}</td>
-          </>
-        );
-        break;
+      
       case 'Fees':
         columns = ['S.No', 'Student Name', 'Amount', 'Date', 'Status'];
         renderRow = (item, index) => (
@@ -553,7 +541,7 @@ function CollegeDetails() {
                 ) : 'No address provided'}
               </div>
               <div className="flex-1 w-full bg-gray-100 rounded-xl min-h-[200px] relative overflow-hidden flex items-center justify-center border border-gray-200">
-                {isLoaded && college?.location?.lat && college?.location?.lng ? (
+                {isLoaded && college?.location?.lat != null && college?.location?.lng != null ? (
                   <GoogleMap
                     mapContainerStyle={{ width: '100%', height: '100%' }}
                     center={{ lat: Number(college.location.lat), lng: Number(college.location.lng) }}
@@ -561,7 +549,7 @@ function CollegeDetails() {
                     options={{
                       streetViewControl: false,
                       mapTypeControl: true,
-                      mapTypeId: 'hybrid',
+                      mapTypeId: 'satellite',
                       fullscreenControl: false,
                     }}
                   >
