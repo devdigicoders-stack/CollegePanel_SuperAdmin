@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import Reports from './pages/Reports';
 import AllAdmins from './pages/AllAdmins';
 import Login from './pages/Login';
+import MasterAcademics from './pages/MasterAcademics';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/all-admins" element={<AllAdmins />} />
+                <Route path="/master-academics" element={<MasterAcademics />} />
               </Routes>
             </Layout>
           </PrivateRoute>

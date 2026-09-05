@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Building2, Save, X, Upload, MapPin, Search } from 'lucide-react';
+import { Building2, Save, X, Upload, MapPin, Search, BookOpen } from 'lucide-react';
 import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
 
 const libraries = ['places'];
@@ -43,6 +43,56 @@ function EditCollege() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const fileInputRef = useRef(null);
+
+  const [masterAcademics, setMasterAcademics] = useState({
+    courses: [],
+    departments: [],
+    semesters: [],
+    subjects: [],
+    designations: []
+  });
+
+  const [selectedAcademics, setSelectedAcademics] = useState({
+    courses: [],
+    departments: [],
+    semesters: [],
+    subjects: [],
+    designations: []
+  });
+
+  useEffect(() => {
+    const fetchMasterData = async () => {
+      try {
+        const [cRes, dRes, sRes, subRes, desRes] = await Promise.all([
+          axiosInstance.get('/superadmin/academics/courses'),
+          axiosInstance.get('/superadmin/academics/departments'),
+          axiosInstance.get('/superadmin/academics/semesters'),
+          axiosInstance.get('/superadmin/academics/subjects'),
+          axiosInstance.get('/superadmin/academics/designations')
+        ]);
+        setMasterAcademics({
+          courses: Array.isArray(cRes.data) ? cRes.data : (cRes.data?.data || []),
+          departments: Array.isArray(dRes.data) ? dRes.data : (dRes.data?.data || []),
+          semesters: Array.isArray(sRes.data) ? sRes.data : (sRes.data?.data || []),
+          subjects: Array.isArray(subRes.data) ? subRes.data : (subRes.data?.data || []),
+          designations: Array.isArray(desRes.data) ? desRes.data : (desRes.data?.data || [])
+        });
+      } catch (error) {
+        console.error('Error fetching master academics', error);
+      }
+    };
+    fetchMasterData();
+  }, []);
+
+  const handleAcademicSelect = (type, id) => {
+    setSelectedAcademics(prev => {
+      const isSelected = prev[type].includes(id);
+      return {
+        ...prev,
+        [type]: isSelected ? prev[type].filter(i => i !== id) : [...prev[type], id]
+      };
+    });
+  };
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -166,6 +216,7 @@ function EditCollege() {
       if (imageFile) {
         submitData.append('collegeLogo', imageFile);
       }
+      submitData.append('academics', JSON.stringify(selectedAcademics));
 
       const res = await axiosInstance.put(`/colleges/${id}`, submitData, {
         headers: { 'Content-Type': 'multipart/form-data' }
@@ -382,6 +433,140 @@ function EditCollege() {
               Loading Map...
             </div>
           )}
+        </div>
+
+        {/* Master Academics Assignment */}
+        <div className="bg-white p-6 sm:p-8 rounded-[16px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100">
+          <h2 className="text-[16px] font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <BookOpen size={18} className="text-[#5a4bda]" /> Assign Master Academics
+          </h2>
+          <p className="text-[13px] text-gray-500 mb-6">
+            Select additional master records to add to this college. Existing college records will not be duplicated.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Courses (Departments) */}
+            <div className="border border-gray-200 rounded-xl overflow-hidden flex flex-col h-64">
+              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 font-semibold text-gray-700 text-[13px] flex justify-between items-center">
+                <span>Courses</span>
+                <span className="text-[11px] bg-white px-2 py-0.5 rounded-full border border-gray-200">{selectedAcademics.departments.length} selected</span>
+              </div>
+              <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 custom-scrollbar">
+                {masterAcademics.departments.length === 0 ? (
+                   <div className="text-[12px] text-gray-400 italic text-center py-4">No master courses found</div>
+                ) : masterAcademics.departments.map(dept => (
+                  <label key={dept._id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-100">
+                    <input 
+                      type="checkbox" 
+                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      checked={selectedAcademics.departments.includes(dept._id)}
+                      onChange={() => handleAcademicSelect('departments', dept._id)}
+                    />
+                    <span className="text-[13px] text-gray-700">{dept.name}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Branches (Courses) */}
+            <div className="border border-gray-200 rounded-xl overflow-hidden flex flex-col h-64">
+              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 font-semibold text-gray-700 text-[13px] flex justify-between items-center">
+                <span>Branches</span>
+                <span className="text-[11px] bg-white px-2 py-0.5 rounded-full border border-gray-200">{selectedAcademics.courses.length} selected</span>
+              </div>
+              <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 custom-scrollbar">
+                {masterAcademics.courses.length === 0 ? (
+                   <div className="text-[12px] text-gray-400 italic text-center py-4">No master branches found</div>
+                ) : masterAcademics.courses.map(course => (
+                  <label key={course._id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-100">
+                    <input 
+                      type="checkbox" 
+                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      checked={selectedAcademics.courses.includes(course._id)}
+                      onChange={() => handleAcademicSelect('courses', course._id)}
+                    />
+                    <div className="flex flex-col">
+                       <span className="text-[13px] text-gray-700 font-medium">{course.name}</span>
+                       <span className="text-[11px] text-gray-400">{course.code} | {course.department}</span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Semesters */}
+            <div className="border border-gray-200 rounded-xl overflow-hidden flex flex-col h-64">
+              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 font-semibold text-gray-700 text-[13px] flex justify-between items-center">
+                <span>Semesters</span>
+                <span className="text-[11px] bg-white px-2 py-0.5 rounded-full border border-gray-200">{selectedAcademics.semesters.length} selected</span>
+              </div>
+              <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 custom-scrollbar">
+                {masterAcademics.semesters.length === 0 ? (
+                   <div className="text-[12px] text-gray-400 italic text-center py-4">No master semesters found</div>
+                ) : masterAcademics.semesters.map(sem => (
+                  <label key={sem._id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-100">
+                    <input 
+                      type="checkbox" 
+                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      checked={selectedAcademics.semesters.includes(sem._id)}
+                      onChange={() => handleAcademicSelect('semesters', sem._id)}
+                    />
+                    <span className="text-[13px] text-gray-700">Semester {sem.semesterNumber}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Subjects */}
+            <div className="border border-gray-200 rounded-xl overflow-hidden flex flex-col h-64 md:col-span-2 lg:col-span-1">
+              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 font-semibold text-gray-700 text-[13px] flex justify-between items-center">
+                <span>Subjects</span>
+                <span className="text-[11px] bg-white px-2 py-0.5 rounded-full border border-gray-200">{selectedAcademics.subjects.length} selected</span>
+              </div>
+              <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 custom-scrollbar">
+                {masterAcademics.subjects.length === 0 ? (
+                   <div className="text-[12px] text-gray-400 italic text-center py-4">No master subjects found</div>
+                ) : masterAcademics.subjects.map(sub => (
+                  <label key={sub._id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-100">
+                    <input 
+                      type="checkbox" 
+                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      checked={selectedAcademics.subjects.includes(sub._id)}
+                      onChange={() => handleAcademicSelect('subjects', sub._id)}
+                    />
+                    <div className="flex flex-col">
+                       <span className="text-[13px] text-gray-700 font-medium">{sub.name}</span>
+                       <span className="text-[11px] text-gray-400">{sub.code} | Sem {sub.semester} | {sub.courseName}</span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Designations */}
+            <div className="border border-gray-200 rounded-xl overflow-hidden flex flex-col h-64 md:col-span-2 lg:col-span-2">
+              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 font-semibold text-gray-700 text-[13px] flex justify-between items-center">
+                <span>Designations</span>
+                <span className="text-[11px] bg-white px-2 py-0.5 rounded-full border border-gray-200">{selectedAcademics.designations.length} selected</span>
+              </div>
+              <div className="flex-1 overflow-y-auto p-3 flex flex-row flex-wrap gap-2 custom-scrollbar items-start content-start">
+                {masterAcademics.designations.length === 0 ? (
+                   <div className="text-[12px] text-gray-400 italic text-center py-4 w-full">No master designations found</div>
+                ) : masterAcademics.designations.map(des => (
+                  <label key={des._id} className="flex items-center gap-2 p-2 px-3 rounded-full hover:bg-gray-50 cursor-pointer transition-colors border border-gray-200">
+                    <input 
+                      type="checkbox" 
+                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      checked={selectedAcademics.designations.includes(des._id)}
+                      onChange={() => handleAcademicSelect('designations', des._id)}
+                    />
+                    <span className="text-[13px] text-gray-700">{des.name}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+          </div>
         </div>
 
         {/* Combined Principal & Admin Information */}

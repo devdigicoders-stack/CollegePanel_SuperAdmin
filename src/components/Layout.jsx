@@ -104,6 +104,22 @@ const Layout = ({ children }) => {
           </div>
 
           <div className="mt-8">
+            <span className="px-8 text-[11px] font-bold text-gray-500 tracking-wider uppercase">ACADEMICS</span>
+            <ul className="mt-3 space-y-1.5 px-4">
+              <li>
+                <Link to="/master-academics" onClick={() => setIsSidebarOpen(false)}>
+                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/master-academics') ? 'bg-[#5a4bda]/10 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
+                    <div className="flex items-center gap-3">
+                      <FileText size={18} className={isActive('/master-academics') ? 'text-[#8b5cf6]' : 'text-gray-400'} />
+                      <span className="font-medium">Master Data</span>
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="mt-8">
             <span className="px-8 text-[11px] font-bold text-gray-500 tracking-wider uppercase">COLLEGE ADMINS</span>
             <ul className="mt-3 space-y-1.5 px-4">
               <li>
