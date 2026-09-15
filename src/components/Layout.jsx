@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { 
   Menu, User, ChevronDown, Home,
   Building2, FileText, 
-  Plus, X, LogOut, AlertTriangle
+  Plus, X, LogOut, AlertTriangle, Sparkles
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -69,7 +69,10 @@ const Layout = ({ children }) => {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto py-5 custom-scrollbar">
+        <div 
+          className="flex-1 overflow-y-auto py-5 custom-scrollbar hide-scrollbar no-scrollbar"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
           <div className="px-4 mb-4">
             <Link to="/dashboard" onClick={() => setIsSidebarOpen(false)}>
               <div className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors ${isActive('/dashboard') ? 'bg-[#5a4bda] shadow-lg shadow-indigo-500/20' : 'hover:bg-gray-800/50'}`}>
@@ -97,6 +100,28 @@ const Layout = ({ children }) => {
                   <div className={`flex items-center gap-3 px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/create-college') ? 'bg-[#5a4bda]/10 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
                     <Plus size={18} className={isActive('/create-college') ? 'text-[#8b5cf6]' : 'text-gray-400'} />
                     <span className="font-medium">Create College</span>
+                  </div>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="mt-8">
+            <span className="px-8 text-[11px] font-bold text-amber-400/90 tracking-wider uppercase flex items-center gap-1.5">
+              <Sparkles size={11} className="text-amber-400" />
+              CAMPUS LICENSING
+            </span>
+            <ul className="mt-3 space-y-1.5 px-4">
+              <li>
+                <Link to="/upgrade-requests" onClick={() => setIsSidebarOpen(false)}>
+                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/upgrade-requests') ? 'bg-gradient-to-r from-amber-500/20 to-purple-500/20 text-white border border-amber-400/30 font-semibold' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
+                    <div className="flex items-center gap-3">
+                      <Sparkles size={18} className={isActive('/upgrade-requests') ? 'text-amber-400' : 'text-amber-400/80'} />
+                      <span className="font-medium">Upgrade Requests</span>
+                    </div>
+                    <span className="bg-amber-400 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded-full uppercase shadow-xs">
+                      PRO
+                    </span>
                   </div>
                 </Link>
               </li>

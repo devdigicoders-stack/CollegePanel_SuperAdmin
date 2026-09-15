@@ -12,6 +12,7 @@ import Reports from './pages/Reports';
 import AllAdmins from './pages/AllAdmins';
 import Login from './pages/Login';
 import MasterAcademics from './pages/MasterAcademics';
+import UpgradeRequests from './pages/UpgradeRequests';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/edit-college/:id" element={<EditCollege />} />
                 <Route path="/all-colleges" element={<AllColleges />} />
                 <Route path="/college-details/:id" element={<CollegeDetails />} />
+                <Route path="/upgrade-requests" element={<UpgradeRequests />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/all-admins" element={<AllAdmins />} />
