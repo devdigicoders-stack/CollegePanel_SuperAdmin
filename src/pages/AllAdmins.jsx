@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Edit, Plus, ChevronLeft, ChevronRight, Key, X, Check, Copy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
@@ -101,7 +101,7 @@ function AllAdmins() {
   };
 
   const handleCopyCredentials = (admin) => {
-    const textToCopy = `Hello ${admin.name},\n\nHere are your login credentials for the DCT CRM portal:\n\nAdmin Panel Link: https://college-panel-admin.vercel.app/login\nEmail ID: ${admin.email}\nPassword: ${admin.password}\n\nPlease keep this information secure.\n\nBest Regards,\nDCT Team`;
+    const textToCopy = `Hello ${admin.name},\n\nHere are your login credentials for the DigiCampusPro College Portal:\n\nAdmin Panel Link: https://admin.digicampuspro.com/login\nEmail ID: ${admin.email}\nPassword: ${admin.password}\n\nPlease keep this information secure.\n\nBest Regards,\nDigiCampusPro Team`;
     
     navigator.clipboard.writeText(textToCopy).then(() => {
       toast.success('Credentials copied to clipboard!');

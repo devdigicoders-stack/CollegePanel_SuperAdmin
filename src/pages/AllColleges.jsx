@@ -86,12 +86,16 @@ function AllColleges() {
 Welcome to ${college.collegeName}! Your admin account has been created successfully.
 
 Here are your login credentials:
-Email ID: ${college.adminEmail}
+College Code: ${college.collegeCode || 'N/A'}
+Username / Email: ${college.adminEmail || college.username}
 Password: ${college.rawPassword || 'Your chosen password'}
 
-Login to Admin Panel: https://college-panel-admin.vercel.app/
+Login to Admin Panel: https://admin.digicampuspro.com/login
 
-Please login and change your password as soon as possible.`;
+Please login and change your password as soon as possible.
+
+Best Regards,
+DigiCampusPro Team`;
 
     navigator.clipboard.writeText(textToCopy).then(() => {
       toast.success('Credentials copied to clipboard!');
