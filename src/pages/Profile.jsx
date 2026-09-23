@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeOff, Camera } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
@@ -106,7 +106,7 @@ function Profile() {
       <div className="mb-6">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">My Profile</h1>
         <div className="flex items-center text-[12px] text-gray-500 font-medium">
-          <Link to="/dashboard" className="hover:text-[#5a4bda] transition-colors">Dashboard</Link>
+          <Link to="/dashboard" className="hover:text-[#008744] transition-colors">Dashboard</Link>
           <span className="mx-2">&gt;</span>
           <span className="text-gray-800 font-semibold">My Profile</span>
         </div>
@@ -126,14 +126,14 @@ function Profile() {
               />
             ) : (
               <img 
-                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(profileData.name || 'Admin')}&background=5a4bda&color=fff&size=150`}
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(profileData.name || 'Admin')}&background=008744&color=fff&size=150`}
                 alt="Profile Placeholder"
                 className="w-full h-full object-cover rounded-full"
               />
             )}
             <button 
               onClick={() => fileInputRef.current.click()}
-              className="absolute bottom-0 right-2 bg-[#5a4bda] text-white p-2 rounded-full border-2 border-white hover:bg-[#4d3ecc] transition-colors shadow-md cursor-pointer"
+              className="absolute bottom-0 right-2 bg-[#008744] text-white p-2 rounded-full border-2 border-white hover:bg-[#007338] transition-colors shadow-md cursor-pointer"
             >
               <Camera size={14} />
             </button>
@@ -167,21 +167,21 @@ function Profile() {
               <div className="flex-1 space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
                   <label className="text-[13px] font-semibold text-gray-600 sm:w-24 shrink-0">Name</label>
-                  <input type="text" value={profileData.name} onChange={(e) => setProfileData({...profileData, name: e.target.value})} className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="text" value={profileData.name} onChange={(e) => setProfileData({...profileData, name: e.target.value})} className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                 </div>
                 
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
                   <label className="text-[13px] font-semibold text-gray-600 sm:w-24 shrink-0">Email</label>
-                  <input type="email" value={profileData.email} onChange={(e) => setProfileData({...profileData, email: e.target.value})} className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="email" value={profileData.email} onChange={(e) => setProfileData({...profileData, email: e.target.value})} className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                 </div>
                 
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
                   <label className="text-[13px] font-semibold text-gray-600 sm:w-24 shrink-0">Mobile</label>
-                  <input type="text" value={profileData.mobile} onChange={(e) => setProfileData({...profileData, mobile: e.target.value})} className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="text" value={profileData.mobile} onChange={(e) => setProfileData({...profileData, mobile: e.target.value})} className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                 </div>
 
                 <div className="flex sm:pl-[120px] pt-2">
-                  <button onClick={handleUpdateProfile} disabled={isUpdating} className="px-6 py-2.5 text-[13px] font-bold text-white bg-[#5a4bda] rounded-lg shadow-md shadow-indigo-500/20 hover:bg-[#4d3ecc] transition-colors disabled:opacity-70">
+                  <button onClick={handleUpdateProfile} disabled={isUpdating} className="px-6 py-2.5 text-[13px] font-bold text-white bg-[#008744] rounded-lg shadow-md shadow-emerald-600/20 hover:bg-[#007338] transition-colors disabled:opacity-70">
                     {isUpdating ? 'Updating...' : 'Update Profile'}
                   </button>
                 </div>
@@ -204,7 +204,7 @@ function Profile() {
                     value={passwords.currentPassword}
                     onChange={(e) => setPasswords({...passwords, currentPassword: e.target.value})}
                     placeholder="Enter current password" 
-                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] pr-10 focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" 
+                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] pr-10 focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" 
                   />
                   <button 
                     type="button"
@@ -224,7 +224,7 @@ function Profile() {
                     value={passwords.newPassword}
                     onChange={(e) => setPasswords({...passwords, newPassword: e.target.value})}
                     placeholder="Enter new password" 
-                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] pr-10 focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" 
+                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] pr-10 focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" 
                   />
                   <button 
                     type="button"
@@ -244,7 +244,7 @@ function Profile() {
                     value={passwords.confirmPassword}
                     onChange={(e) => setPasswords({...passwords, confirmPassword: e.target.value})}
                     placeholder="Confirm new password" 
-                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] pr-10 focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" 
+                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] pr-10 focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" 
                   />
                   <button 
                     type="button"
@@ -259,7 +259,7 @@ function Profile() {
             </div>
 
             <div className="mt-8 flex justify-center md:justify-start">
-              <button onClick={handleChangePassword} disabled={isChangingPassword} className="px-8 py-2.5 text-[13px] font-bold text-white bg-[#5a4bda] rounded-lg shadow-md shadow-indigo-500/20 hover:bg-[#4d3ecc] transition-colors disabled:opacity-70">
+              <button onClick={handleChangePassword} disabled={isChangingPassword} className="px-8 py-2.5 text-[13px] font-bold text-white bg-[#008744] rounded-lg shadow-md shadow-emerald-600/20 hover:bg-[#007338] transition-colors disabled:opacity-70">
                 {isChangingPassword ? 'Updating...' : 'Update Password'}
               </button>
             </div>

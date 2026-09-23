@@ -50,19 +50,21 @@ const Layout = ({ children }) => {
 
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-[260px] bg-[#1a2035] text-white flex flex-col 
+        fixed inset-y-0 left-0 z-50 w-[260px] bg-[#05140D] border-r border-emerald-950/40 text-white flex flex-col 
         transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 shrink-0
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        <div className="flex items-center justify-between lg:justify-center h-[70px] border-b border-gray-700/50 px-4">
-          <div className="flex items-center gap-3">
-             <div className="bg-transparent border border-purple-500/30 p-1.5 rounded-lg flex items-center justify-center">
-               <Building2 size={22} className="text-[#8b5cf6]"/>
-             </div>
-             <span className="font-bold text-[15px] tracking-wide text-gray-100">POLYTECHNIC ERP</span>
+        <div className="flex items-center justify-between h-[72px] border-b border-emerald-900/30 px-3.5">
+          <div className="flex-1 bg-white rounded-xl py-1.5 px-3 shadow-md flex items-center justify-between border border-emerald-500/20">
+            <img 
+              src="/DigiCampus Logo.png" 
+              alt="DigiCampusPro Logo" 
+              className="h-8 w-auto max-w-[145px] object-contain" 
+            />
+            <span className="text-[9px] font-black uppercase tracking-wider bg-gradient-to-r from-[#FFA000] to-[#FF6000] text-white px-2 py-0.5 rounded shadow-xs ml-1 font-['Inter']">SUPER</span>
           </div>
           <button 
-            className="lg:hidden text-gray-400 hover:text-white"
+            className="lg:hidden text-gray-400 hover:text-white ml-2"
             onClick={() => setIsSidebarOpen(false)}
           >
             <X size={20} />
@@ -75,21 +77,21 @@ const Layout = ({ children }) => {
         >
           <div className="px-4 mb-4">
             <Link to="/dashboard" onClick={() => setIsSidebarOpen(false)}>
-              <div className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors ${isActive('/dashboard') ? 'bg-[#5a4bda] shadow-lg shadow-indigo-500/20' : 'hover:bg-gray-800/50'}`}>
-                <Home size={20} className={isActive('/dashboard') ? 'text-white' : 'text-gray-400'} />
+              <div className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-[#008744] to-[#00A651] text-white font-bold shadow-md shadow-emerald-950/40' : 'text-slate-300 hover:text-white hover:bg-emerald-950/40'}`}>
+                <Home size={20} className={isActive('/dashboard') ? 'text-white' : 'text-emerald-500/70'} />
                 <span className={`text-sm font-semibold ${isActive('/dashboard') ? 'text-white' : 'text-gray-300'}`}>Dashboard</span>
               </div>
             </Link>
           </div>
 
           <div className="mt-6">
-            <span className="px-8 text-[11px] font-bold text-gray-500 tracking-wider uppercase">COLLEGES</span>
+            <span className="px-8 text-[11px] font-bold text-emerald-400/70 tracking-wider uppercase">COLLEGES</span>
             <ul className="mt-3 space-y-1.5 px-4">
               <li>
                 <Link to="/all-colleges" onClick={() => setIsSidebarOpen(false)}>
-                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/all-colleges') ? 'bg-[#5a4bda]/10 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
+                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-all ${isActive('/all-colleges') ? 'bg-[#008744]/20 text-emerald-300 font-semibold border border-emerald-500/30' : 'text-gray-300 hover:text-white hover:bg-emerald-950/40'}`}>
                     <div className="flex items-center gap-3">
-                      <Building2 size={18} className={isActive('/all-colleges') ? 'text-[#8b5cf6]' : 'text-gray-400'} />
+                      <Building2 size={18} className={isActive('/all-colleges') ? 'text-emerald-400' : 'text-gray-400'} />
                       <span className="font-medium">All Colleges</span>
                     </div>
                   </div>
@@ -97,8 +99,8 @@ const Layout = ({ children }) => {
               </li>
               <li>
                 <Link to="/create-college" onClick={() => setIsSidebarOpen(false)}>
-                  <div className={`flex items-center gap-3 px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/create-college') ? 'bg-[#5a4bda]/10 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
-                    <Plus size={18} className={isActive('/create-college') ? 'text-[#8b5cf6]' : 'text-gray-400'} />
+                  <div className={`flex items-center gap-3 px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-all ${isActive('/create-college') ? 'bg-[#008744]/20 text-emerald-300 font-semibold border border-emerald-500/30' : 'text-gray-300 hover:text-white hover:bg-emerald-950/40'}`}>
+                    <Plus size={18} className={isActive('/create-college') ? 'text-emerald-400' : 'text-gray-400'} />
                     <span className="font-medium">Create College</span>
                   </div>
                 </Link>
@@ -107,19 +109,19 @@ const Layout = ({ children }) => {
           </div>
 
           <div className="mt-8">
-            <span className="px-8 text-[11px] font-bold text-amber-400/90 tracking-wider uppercase flex items-center gap-1.5">
-              <Sparkles size={11} className="text-amber-400" />
+            <span className="px-8 text-[11px] font-bold text-[#FFA000] tracking-wider uppercase flex items-center gap-1.5">
+              <Sparkles size={11} className="text-[#FFA000]" />
               CAMPUS LICENSING
             </span>
             <ul className="mt-3 space-y-1.5 px-4">
               <li>
                 <Link to="/upgrade-requests" onClick={() => setIsSidebarOpen(false)}>
-                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/upgrade-requests') ? 'bg-gradient-to-r from-amber-500/20 to-purple-500/20 text-white border border-amber-400/30 font-semibold' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
+                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-all ${isActive('/upgrade-requests') ? 'bg-gradient-to-r from-orange-500/20 to-emerald-500/20 text-white border border-orange-400/40 font-semibold' : 'text-gray-300 hover:text-white hover:bg-emerald-950/40'}`}>
                     <div className="flex items-center gap-3">
-                      <Sparkles size={18} className={isActive('/upgrade-requests') ? 'text-amber-400' : 'text-amber-400/80'} />
+                      <Sparkles size={18} className={isActive('/upgrade-requests') ? 'text-[#FFA000]' : 'text-[#FFA000]/80'} />
                       <span className="font-medium">Upgrade Requests</span>
                     </div>
-                    <span className="bg-amber-400 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded-full uppercase shadow-xs">
+                    <span className="bg-gradient-to-r from-[#FFA000] to-[#FF6000] text-white font-black text-[9px] px-2 py-0.5 rounded-full uppercase shadow-xs">
                       PRO
                     </span>
                   </div>
@@ -129,13 +131,13 @@ const Layout = ({ children }) => {
           </div>
 
           <div className="mt-8">
-            <span className="px-8 text-[11px] font-bold text-gray-500 tracking-wider uppercase">ACADEMICS</span>
+            <span className="px-8 text-[11px] font-bold text-emerald-400/70 tracking-wider uppercase">ACADEMICS</span>
             <ul className="mt-3 space-y-1.5 px-4">
               <li>
                 <Link to="/master-academics" onClick={() => setIsSidebarOpen(false)}>
-                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/master-academics') ? 'bg-[#5a4bda]/10 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
+                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-all ${isActive('/master-academics') ? 'bg-[#008744]/20 text-emerald-300 font-semibold border border-emerald-500/30' : 'text-gray-300 hover:text-white hover:bg-emerald-950/40'}`}>
                     <div className="flex items-center gap-3">
-                      <FileText size={18} className={isActive('/master-academics') ? 'text-[#8b5cf6]' : 'text-gray-400'} />
+                      <FileText size={18} className={isActive('/master-academics') ? 'text-emerald-400' : 'text-gray-400'} />
                       <span className="font-medium">Master Data</span>
                     </div>
                   </div>
@@ -145,13 +147,13 @@ const Layout = ({ children }) => {
           </div>
 
           <div className="mt-8">
-            <span className="px-8 text-[11px] font-bold text-gray-500 tracking-wider uppercase">COLLEGE ADMINS</span>
+            <span className="px-8 text-[11px] font-bold text-emerald-400/70 tracking-wider uppercase">COLLEGE ADMINS</span>
             <ul className="mt-3 space-y-1.5 px-4">
               <li>
                 <Link to="/all-admins" onClick={() => setIsSidebarOpen(false)}>
-                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/all-admins') ? 'bg-[#5a4bda]/10 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
+                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-all ${isActive('/all-admins') ? 'bg-[#008744]/20 text-emerald-300 font-semibold border border-emerald-500/30' : 'text-gray-300 hover:text-white hover:bg-emerald-950/40'}`}>
                     <div className="flex items-center gap-3">
-                      <User size={18} className={isActive('/all-admins') ? 'text-[#8b5cf6]' : 'text-gray-400'} />
+                      <User size={18} className={isActive('/all-admins') ? 'text-emerald-400' : 'text-gray-400'} />
                       <span className="font-medium">All Admins</span>
                     </div>
                   </div>
@@ -161,13 +163,13 @@ const Layout = ({ children }) => {
           </div>
 
           <div className="mt-8">
-            <span className="px-8 text-[11px] font-bold text-gray-500 tracking-wider uppercase">REPORTS</span>
+            <span className="px-8 text-[11px] font-bold text-emerald-400/70 tracking-wider uppercase">REPORTS</span>
             <ul className="mt-3 space-y-1.5 px-4">
               <li>
                 <Link to="/reports" onClick={() => setIsSidebarOpen(false)}>
-                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-colors ${isActive('/reports') ? 'bg-[#5a4bda]/10 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800/50'}`}>
+                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-all ${isActive('/reports') ? 'bg-[#008744]/20 text-emerald-300 font-semibold border border-emerald-500/30' : 'text-gray-300 hover:text-white hover:bg-emerald-950/40'}`}>
                     <div className="flex items-center gap-3">
-                      <FileText size={18} className={isActive('/reports') ? 'text-[#8b5cf6]' : 'text-gray-400'} />
+                      <FileText size={18} className={isActive('/reports') ? 'text-emerald-400' : 'text-gray-400'} />
                       <span className="font-medium">View Reports</span>
                     </div>
                   </div>
@@ -178,7 +180,7 @@ const Layout = ({ children }) => {
         </div>
 
         {/* Logout Button - Fixed at bottom */}
-        <div className="px-4 py-4 border-t border-gray-700/50 shrink-0">
+        <div className="px-4 py-4 border-t border-emerald-900/40 shrink-0">
           <div onClick={handleLogoutClick} className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-red-400 hover:text-white hover:bg-red-500/20 transition-all group">
             <LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />
             <span className="text-[13px] font-semibold">Logout</span>
@@ -191,12 +193,6 @@ const Layout = ({ children }) => {
         {/* Header */}
         <header className="h-[70px] bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-10 shrink-0 shadow-sm">
           <div className="flex items-center gap-3 sm:gap-5">
-            {/* <button 
-              className="text-gray-500 hover:text-gray-800 transition-colors p-1"
-              onClick={() => setIsSidebarOpen(true)}
-            >
-              <Menu size={24} />
-            </button> */}
             {/* Title depends on route, but for now we let pages handle their own headers or we can keep it dynamic */}
             <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight hidden sm:block">
               {location.pathname === '/create-college' ? 'Create College' : 'Dashboard'}
@@ -204,15 +200,13 @@ const Layout = ({ children }) => {
           </div>
           
           <div className="flex items-center gap-4 sm:gap-5">
-
-            
-            <Link to="/profile" className="flex items-center gap-2 sm:gap-3 sm:pl-5 sm:border-l border-gray-200 cursor-pointer hover:bg-gray-50 p-1.5 rounded-lg transition-colors">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border border-gray-200 shrink-0">
+            <Link to="/profile" className="flex items-center gap-2 sm:gap-3 sm:pl-5 sm:border-l border-gray-200 cursor-pointer hover:bg-emerald-50/50 p-1.5 rounded-lg transition-colors">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-100 flex items-center justify-center overflow-hidden border border-emerald-200 shrink-0">
                 {avatarUrl ? (
                   <img src={avatarUrl} alt="Admin" className="w-full h-full object-cover" />
                 ) : (
                   <img 
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(superadminInfo.name || 'Admin')}&background=5a4bda&color=fff`} 
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(superadminInfo.name || 'Admin')}&background=008744&color=fff`} 
                     alt="Admin Placeholder" 
                     className="w-full h-full object-cover" 
                   />
@@ -220,15 +214,14 @@ const Layout = ({ children }) => {
               </div>
               <div className="hidden sm:block">
                 <p className="text-[13px] font-bold text-gray-800 leading-tight">{superadminInfo.name}</p>
-                <p className="text-[11px] font-medium text-gray-500">Super Admin</p>
+                <p className="text-[11px] font-semibold text-[#008744]">Super Admin</p>
               </div>
-              {/* <ChevronDown size={16} className="text-gray-400 hidden sm:block ml-1"/> */}
             </Link>
           </div>
         </header>
 
         {/* Scrollable Page Content */}
-        <div className="flex-1 overflow-auto p-4 sm:p-6 bg-[#f8f9fc] w-full">
+        <div className="flex-1 overflow-auto p-4 sm:p-6 bg-[#f8faf9] w-full">
           {children}
         </div>
       </main>

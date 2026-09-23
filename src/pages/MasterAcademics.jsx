@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Edit, Trash2, ChevronRight, Plus, X, AlertTriangle } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
@@ -288,7 +288,7 @@ const MasterAcademics = () => {
             onClick={() => setActiveMenu(item.name)}
             className={`w-auto md:w-full flex-shrink-0 flex items-center justify-between px-4 md:px-6 py-2 md:py-3.5 transition-all text-left rounded-full md:rounded-none md:rounded-r-full border md:border-transparent ${
               activeMenu === item.name 
-                ? 'bg-[#8b5cf6] border-[#8b5cf6] text-white font-medium shadow-sm' 
+                ? 'bg-[#008744] border-[#008744] text-white font-medium shadow-sm' 
                 : 'bg-white md:bg-transparent border-gray-200 text-gray-600 hover:bg-gray-50 md:hover:bg-gray-50 md:text-gray-700 font-medium'
             }`}
           >
@@ -302,10 +302,10 @@ const MasterAcademics = () => {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header inside content */}
         <div className="flex items-center justify-between p-4 md:p-6 gap-2 border-b border-gray-100 md:border-none mb-2 md:mb-0">
-          <h2 className="text-[17px] md:text-[18px] font-bold text-[#8b5cf6] font-['Outfit']">{activeMenu} (Master)</h2>
+          <h2 className="text-[17px] md:text-[18px] font-bold text-[#008744] font-['Outfit']">{activeMenu} (Master)</h2>
           <button 
             onClick={handleAddClick}
-            className="bg-[#8b5cf6] hover:bg-purple-700 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg text-[13px] font-semibold flex items-center gap-1.5 transition-colors shadow-sm font-['Inter'] flex-shrink-0"
+            className="bg-[#008744] hover:bg-[#007338] text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg text-[13px] font-semibold flex items-center gap-1.5 transition-colors shadow-sm font-['Inter'] flex-shrink-0"
           >
             <Plus size={16} strokeWidth={2.5} />
             <span className="hidden sm:inline">Add Master {activeMenu.slice(0, -1)}</span>
@@ -427,7 +427,7 @@ const AcademicsModal = ({ title, fields, formData, onInputChange, onSubmit, onCl
                   value={formData[field.key] || ''}
                   onChange={(e) => onInputChange(field.key, e.target.value)}
                   required={field.required}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#8b5cf6] text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#008744] text-sm"
                 >
                   <option value="">Select {field.label}</option>
                   {field.options?.map((opt) => {
@@ -445,7 +445,7 @@ const AcademicsModal = ({ title, fields, formData, onInputChange, onSubmit, onCl
                   onChange={(e) => onInputChange(field.key, e.target.value)}
                   disabled={field.disabled}
                   required={field.required}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#8b5cf6] text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#008744] text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
               )}
             </div>
@@ -454,7 +454,7 @@ const AcademicsModal = ({ title, fields, formData, onInputChange, onSubmit, onCl
           <div className="flex gap-3 pt-4">
             <button
               type="submit"
-              className="flex-1 bg-[#8b5cf6] text-white py-2 rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm"
+              className="flex-1 bg-[#008744] text-white py-2 rounded-lg hover:bg-[#007338] transition-colors font-medium text-sm"
             >
               {formData._id ? 'Update' : 'Create'}
             </button>

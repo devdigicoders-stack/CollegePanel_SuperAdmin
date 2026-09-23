@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Sparkles, CheckCircle2, XCircle, Clock, Search, 
   Building2, Phone, Mail, User, ShieldCheck, 
@@ -30,7 +30,7 @@ export const ALL_CAMPUS_MODULES = [
     name: 'Library Management',
     desc: 'Books Catalog, Issue/Return Desk & Automated Fines',
     icon: Library,
-    badgeColor: 'bg-purple-50 text-purple-800 border-purple-200'
+    badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200'
   },
   {
     key: 'complaints',
@@ -44,7 +44,7 @@ export const ALL_CAMPUS_MODULES = [
     name: 'Campus Security & Gatepass',
     desc: 'Gate Security, Visitor Logs & Check-in Desk',
     icon: DoorOpen,
-    badgeColor: 'bg-indigo-50 text-indigo-800 border-indigo-200'
+    badgeColor: 'bg-teal-50 text-teal-800 border-teal-200'
   },
   {
     key: 'all',
@@ -226,7 +226,7 @@ const UpgradeRequests = () => {
       label = customLabel || 'MESS';
     } else if (k === 'library') {
       icon = Library;
-      color = 'bg-purple-50 text-purple-800 border-purple-200';
+      color = 'bg-emerald-50 text-emerald-800 border-emerald-200';
       label = customLabel || 'LIBRARY';
     } else if (k === 'complaints') {
       icon = ShieldAlert;
@@ -234,7 +234,7 @@ const UpgradeRequests = () => {
       label = customLabel || 'COMPLAINTS';
     } else if (k === 'security') {
       icon = DoorOpen;
-      color = 'bg-indigo-50 text-indigo-800 border-indigo-200';
+      color = 'bg-teal-50 text-teal-800 border-teal-200';
       label = customLabel || 'SECURITY';
     } else if (k === 'all') {
       icon = Sparkles;
@@ -281,7 +281,7 @@ const UpgradeRequests = () => {
       
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-[#1a2035] via-[#242d4a] to-[#1a2035] rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#008744]/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -318,7 +318,7 @@ const UpgradeRequests = () => {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5">
         
         <div className="bg-white p-4.5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold flex-shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-emerald-50 text-[#008744] flex items-center justify-center font-bold flex-shrink-0">
             <Building2 size={22} />
           </div>
           <div>
@@ -416,7 +416,7 @@ const UpgradeRequests = () => {
               placeholder="Search college, person, phone, module..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#5a4bda]/20 focus:bg-white transition-all"
+              className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#008744]/20 focus:bg-white transition-all"
             />
           </div>
         </div>
@@ -425,7 +425,7 @@ const UpgradeRequests = () => {
         <div className="overflow-x-auto">
           {loading ? (
             <div className="p-12 text-center text-gray-400">
-              <RefreshCw size={24} className="animate-spin mx-auto mb-2 text-[#5a4bda]" />
+              <RefreshCw size={24} className="animate-spin mx-auto mb-2 text-[#008744]" />
               <p className="text-xs font-medium">Loading upgrade requests...</p>
             </div>
           ) : requests.length === 0 ? (
@@ -472,7 +472,7 @@ const UpgradeRequests = () => {
                       
                       {/* College Info */}
                       <td className="py-4 px-5">
-                        <div className="font-bold text-gray-900 text-[13px] group-hover:text-[#5a4bda] transition-colors">
+                        <div className="font-bold text-gray-900 text-[13px] group-hover:text-[#008744] transition-colors">
                           {req.collegeName}
                         </div>
                         <div className="text-[11px] text-gray-500 mt-0.5 flex items-center gap-1.5">
@@ -498,7 +498,7 @@ const UpgradeRequests = () => {
                         <div className="mt-1 flex items-center gap-2.5 text-[11px] text-gray-600">
                           <a 
                             href={`tel:${req.phone}`} 
-                            className="hover:text-[#5a4bda] flex items-center gap-1 font-mono font-medium"
+                            className="hover:text-[#008744] flex items-center gap-1 font-mono font-medium"
                             title="Call Contact"
                           >
                             <Phone size={11} className="text-gray-400" />
@@ -700,7 +700,7 @@ const UpgradeRequests = () => {
               <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-3">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                    <Info size={13} className="text-[#5a4bda]" />
+                    <Info size={13} className="text-[#008744]" />
                     Upgrade Request Details
                   </span>
                   <div>

@@ -56,10 +56,10 @@ function Dashboard() {
   };
 
   const statCards = [
-    { title: 'Total Colleges', value: stats.totalColleges, icon: Building2, color: 'text-blue-500', bg: 'bg-blue-50', link: '/all-colleges' },
+    { title: 'Total Colleges', value: stats.totalColleges, icon: Building2, color: 'text-[#008744]', bg: 'bg-emerald-50', link: '/all-colleges' },
     { title: 'Active Colleges', value: stats.activeColleges, icon: PlayCircle, color: 'text-green-500', bg: 'bg-green-50', link: '/all-colleges' },
     { title: 'Inactive Colleges', value: stats.inactiveColleges, icon: StopCircle, color: 'text-red-500', bg: 'bg-red-50', link: '/all-colleges' },
-    { title: 'Total Admins', value: stats.totalAdmins, icon: User, color: 'text-orange-500', bg: 'bg-orange-50', link: '/all-admins' },
+    { title: 'Total Admins', value: stats.totalAdmins, icon: User, color: 'text-[#FF7A00]', bg: 'bg-orange-50', link: '/all-admins' },
   ];
 
   const monthlyRegOptions = {
@@ -76,13 +76,13 @@ function Dashboard() {
     tooltip: { backgroundColor: '#fff', borderColor: '#e2e8f0', borderRadius: 8, shadow: true },
     plotOptions: {
       line: {
-        marker: { symbol: 'circle', radius: 4, fillColor: '#fff', lineWidth: 2, lineColor: '#5a4bda' }
+        marker: { symbol: 'circle', radius: 4, fillColor: '#fff', lineWidth: 2, lineColor: '#008744' }
       }
     },
     series: [{ 
       name: 'Registration', 
       data: chartData.monthlyRegistrations, 
-      color: '#5a4bda', lineWidth: 3
+      color: '#008744', lineWidth: 3
     }]
   };
 
@@ -104,7 +104,7 @@ function Dashboard() {
     series: [{ 
       name: 'Students', 
       data: chartData.collegeWiseStudents.data, 
-      color: '#7c3aed' 
+      color: '#008744' 
     }]
   };
 
@@ -125,14 +125,14 @@ function Dashboard() {
         lineWidth: 3, marker: { enabled: false },
         fillColor: {
           linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-          stops: [ [0, 'rgba(139, 92, 246, 0.4)'], [1, 'rgba(139, 92, 246, 0)'] ]
+          stops: [ [0, 'rgba(255, 122, 0, 0.4)'], [1, 'rgba(255, 122, 0, 0)'] ]
         }
       }
     },
     series: [{ 
       name: 'Admissions', 
       data: chartData.monthlyAdmissions, 
-      color: '#8b5cf6' 
+      color: '#FF7A00' 
     }]
   };
 
@@ -186,7 +186,7 @@ function Dashboard() {
         
         {/* Monthly College Registration */}
         <div className="bg-white p-4 sm:p-6 rounded-[16px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden relative">
-          {loading && <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#5a4bda]"></div></div>}
+          {loading && <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#008744]"></div></div>}
           <div className="flex justify-between items-center mb-4 sm:mb-6">
             <h3 className="text-[14px] sm:text-[15px] font-bold text-gray-800">Monthly College Registration</h3>
             <select value={year} onChange={handleYearChange} className="text-[11px] sm:text-[12px] font-medium border border-gray-200 rounded-md text-gray-600 bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 outline-none cursor-pointer">
@@ -200,7 +200,7 @@ function Dashboard() {
 
         {/* College-wise Student Count */}
         <div className="bg-white p-4 sm:p-6 rounded-[16px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden relative">
-          {loading && <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#5a4bda]"></div></div>}
+          {loading && <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#008744]"></div></div>}
           <div className="flex justify-between items-center mb-4 sm:mb-6">
             <h3 className="text-[14px] sm:text-[15px] font-bold text-gray-800">College-wise Student Count</h3>
             {/* No year filter for this specific chart usually, but keeping alignment */}
@@ -212,7 +212,7 @@ function Dashboard() {
 
         {/* Monthly Admission Growth */}
         <div className="bg-white p-4 sm:p-6 rounded-[16px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden relative">
-          {loading && <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#5a4bda]"></div></div>}
+          {loading && <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#008744]"></div></div>}
           <div className="flex justify-between items-center mb-4 sm:mb-6">
             <h3 className="text-[14px] sm:text-[15px] font-bold text-gray-800">Monthly Admission Growth</h3>
             <select value={year} onChange={handleYearChange} className="text-[11px] sm:text-[12px] font-medium border border-gray-200 rounded-md text-gray-600 bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 outline-none cursor-pointer">

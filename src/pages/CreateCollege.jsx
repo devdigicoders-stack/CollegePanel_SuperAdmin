@@ -193,9 +193,9 @@ function CreateCollege() {
     <div className="max-w-6xl mx-auto pb-10">
       {/* Breadcrumb */}
       <div className="mb-6 flex items-center text-[12px] text-gray-500 font-medium">
-        <span className="cursor-pointer hover:text-[#5a4bda] transition-colors">Dashboard</span>
+        <span className="cursor-pointer hover:text-[#008744] transition-colors">Dashboard</span>
         <span className="mx-2">&gt;</span>
-        <span className="cursor-pointer hover:text-[#5a4bda] transition-colors">Colleges</span>
+        <span className="cursor-pointer hover:text-[#008744] transition-colors">Colleges</span>
         <span className="mx-2">&gt;</span>
         <span className="text-gray-800 font-semibold">Create College</span>
       </div>
@@ -210,17 +210,17 @@ function CreateCollege() {
               
               <div>
                 <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">College Name<span className="text-red-500">*</span></label>
-                <input type="text" name="collegeName" value={formData.collegeName} onChange={handleInputChange} placeholder="Enter college name" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                <input type="text" name="collegeName" value={formData.collegeName} onChange={handleInputChange} placeholder="Enter college name" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
               </div>
               
               <div>
                 <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">College Code<span className="text-red-500">*</span></label>
-                <input type="text" name="collegeCode" value={formData.collegeCode} onChange={handleInputChange} placeholder="Enter college code" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                <input type="text" name="collegeCode" value={formData.collegeCode} onChange={handleInputChange} placeholder="Enter college code" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
               </div>
 
               <div>
                 <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">College Type<span className="text-red-500">*</span></label>
-                <select name="collegeType" value={formData.collegeType} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all outline-none">
+                <select name="collegeType" value={formData.collegeType} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all outline-none">
                   <option value="" className="text-gray-500">Select type</option>
                   <option value="Government">Government</option>
                   <option value="Private">Private</option>
@@ -231,27 +231,27 @@ function CreateCollege() {
 
               <div>
                 <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">AICTE Code</label>
-                <input type="text" name="aicteCode" value={formData.aicteCode} onChange={handleInputChange} placeholder="Enter AICTE code" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                <input type="text" name="aicteCode" value={formData.aicteCode} onChange={handleInputChange} placeholder="Enter AICTE code" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
               </div>
 
               <div>
                 <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Affiliation Number</label>
-                <input type="text" name="affiliationNumber" value={formData.affiliationNumber} onChange={handleInputChange} placeholder="Enter affiliation number" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                <input type="text" name="affiliationNumber" value={formData.affiliationNumber} onChange={handleInputChange} placeholder="Enter affiliation number" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
               </div>
 
               <div>
                 <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Established Year</label>
-                <input type="text" name="establishedYear" value={formData.establishedYear} onChange={handleInputChange} placeholder="e.g. 1995" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                <input type="text" name="establishedYear" value={formData.establishedYear} onChange={handleInputChange} placeholder="e.g. 1995" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
               </div>
 
               <div>
                 <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Contact Number</label>
-                <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleInputChange} placeholder="Enter contact number" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleInputChange} placeholder="Enter contact number" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
               </div>
 
               <div>
                 <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Website</label>
-                <input type="text" name="website" value={formData.website} onChange={handleInputChange} placeholder="Enter website" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                <input type="text" name="website" value={formData.website} onChange={handleInputChange} placeholder="Enter website" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
               </div>
 
             </div>
@@ -263,7 +263,7 @@ function CreateCollege() {
                
                <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
                
-               <div onClick={() => fileInputRef.current.click()} className="w-full h-[180px] border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 flex flex-col items-center justify-center gap-3 transition-colors hover:border-[#5a4bda] hover:bg-[#5a4bda]/5 cursor-pointer overflow-hidden">
+               <div onClick={() => fileInputRef.current.click()} className="w-full h-[180px] border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 flex flex-col items-center justify-center gap-3 transition-colors hover:border-[#008744] hover:bg-[#008744]/5 cursor-pointer overflow-hidden">
                  {logoPreview ? (
                    <img src={logoPreview} alt="Preview" className="w-full h-full object-contain p-2" />
                  ) : (
@@ -271,7 +271,7 @@ function CreateCollege() {
                      <div className="w-12 h-12 bg-white rounded-lg shadow-sm border border-gray-100 flex items-center justify-center">
                         <Upload size={20} className="text-gray-400" />
                      </div>
-                     <button type="button" className="px-4 py-1.5 bg-[#5a4bda]/10 text-[#5a4bda] text-[12px] font-bold rounded-md hover:bg-[#5a4bda]/20 transition-colors">
+                     <button type="button" className="px-4 py-1.5 bg-[#008744]/10 text-[#008744] text-[12px] font-bold rounded-md hover:bg-[#008744]/20 transition-colors">
                        Upload Logo
                      </button>
                      <span className="text-[11px] text-gray-400 font-medium">JPG, PNG, GIF (Max. 2MB)</span>
@@ -281,7 +281,7 @@ function CreateCollege() {
                
                <div className="mt-5">
                  <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Official Email</label>
-                 <input type="email" name="officialEmail" value={formData.officialEmail} onChange={handleInputChange} placeholder="Enter email" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                 <input type="email" name="officialEmail" value={formData.officialEmail} onChange={handleInputChange} placeholder="Enter email" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                </div>
             </div>
           </div>
@@ -293,27 +293,27 @@ function CreateCollege() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
             <div className="md:col-span-2">
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Complete Address</label>
-              <textarea name="address" value={formData.address} onChange={handleInputChange} rows="2" placeholder="Enter complete address" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all resize-none"></textarea>
+              <textarea name="address" value={formData.address} onChange={handleInputChange} rows="2" placeholder="Enter complete address" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all resize-none"></textarea>
             </div>
             
             <div>
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">City</label>
-              <input type="text" name="city" value={formData.city} onChange={handleInputChange} placeholder="Enter city" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+              <input type="text" name="city" value={formData.city} onChange={handleInputChange} placeholder="Enter city" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
             </div>
 
             <div>
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">District</label>
-              <input type="text" name="district" value={formData.district} onChange={handleInputChange} placeholder="Enter district" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+              <input type="text" name="district" value={formData.district} onChange={handleInputChange} placeholder="Enter district" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
             </div>
 
             <div>
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">State</label>
-              <input type="text" name="state" value={formData.state} onChange={handleInputChange} placeholder="Enter state" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+              <input type="text" name="state" value={formData.state} onChange={handleInputChange} placeholder="Enter state" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
             </div>
 
             <div>
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">PIN Code</label>
-              <input type="text" name="pinCode" value={formData.pinCode} onChange={handleInputChange} placeholder="Enter PIN code" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+              <input type="text" name="pinCode" value={formData.pinCode} onChange={handleInputChange} placeholder="Enter PIN code" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
             </div>
           </div>
         </div>
@@ -321,17 +321,17 @@ function CreateCollege() {
         {/* Location Information */}
         <div className="bg-white p-6 sm:p-8 rounded-[16px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100">
           <h2 className="text-[16px] font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <MapPin size={18} className="text-[#5a4bda]" /> Location (Google Maps)
+            <MapPin size={18} className="text-[#008744]" /> Location (Google Maps)
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mb-6">
             <div>
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Latitude<span className="text-red-500">*</span></label>
-              <input type="number" step="any" name="lat" required value={formData.lat} onChange={handleInputChange} placeholder="e.g. 28.7041" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+              <input type="number" step="any" name="lat" required value={formData.lat} onChange={handleInputChange} placeholder="e.g. 28.7041" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
             </div>
             <div>
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Longitude<span className="text-red-500">*</span></label>
-              <input type="number" step="any" name="lng" required value={formData.lng} onChange={handleInputChange} placeholder="e.g. 77.1025" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+              <input type="number" step="any" name="lng" required value={formData.lng} onChange={handleInputChange} placeholder="e.g. 77.1025" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
             </div>
           </div>
           
@@ -345,7 +345,7 @@ function CreateCollege() {
                   <input
                     type="text"
                     placeholder="Search for a college or location..."
-                    className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent shadow-sm"
+                    className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent shadow-sm"
                   />
                 </div>
               </Autocomplete>
@@ -392,7 +392,7 @@ function CreateCollege() {
         {/* Master Academics Assignment */}
         <div className="bg-white p-6 sm:p-8 rounded-[16px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100">
           <h2 className="text-[16px] font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <BookOpen size={18} className="text-[#5a4bda]" /> Assign Master Academics
+            <BookOpen size={18} className="text-[#008744]" /> Assign Master Academics
           </h2>
           <p className="text-[13px] text-gray-500 mb-6">
             Select the master records you want to copy into this new college. The college admin can modify their copies without affecting the master templates.
@@ -412,7 +412,7 @@ function CreateCollege() {
                   <label key={dept._id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-100">
                     <input 
                       type="checkbox" 
-                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      className="rounded border-gray-300 text-[#008744] focus:ring-[#008744]"
                       checked={selectedAcademics.departments.includes(dept._id)}
                       onChange={() => handleAcademicSelect('departments', dept._id)}
                     />
@@ -435,7 +435,7 @@ function CreateCollege() {
                   <label key={course._id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-100">
                     <input 
                       type="checkbox" 
-                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      className="rounded border-gray-300 text-[#008744] focus:ring-[#008744]"
                       checked={selectedAcademics.courses.includes(course._id)}
                       onChange={() => handleAcademicSelect('courses', course._id)}
                     />
@@ -461,7 +461,7 @@ function CreateCollege() {
                   <label key={sem._id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-100">
                     <input 
                       type="checkbox" 
-                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      className="rounded border-gray-300 text-[#008744] focus:ring-[#008744]"
                       checked={selectedAcademics.semesters.includes(sem._id)}
                       onChange={() => handleAcademicSelect('semesters', sem._id)}
                     />
@@ -484,7 +484,7 @@ function CreateCollege() {
                   <label key={sub._id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-100">
                     <input 
                       type="checkbox" 
-                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      className="rounded border-gray-300 text-[#008744] focus:ring-[#008744]"
                       checked={selectedAcademics.subjects.includes(sub._id)}
                       onChange={() => handleAcademicSelect('subjects', sub._id)}
                     />
@@ -510,7 +510,7 @@ function CreateCollege() {
                   <label key={des._id} className="flex items-center gap-2 p-2 px-3 rounded-full hover:bg-gray-50 cursor-pointer transition-colors border border-gray-200">
                     <input 
                       type="checkbox" 
-                      className="rounded border-gray-300 text-[#5a4bda] focus:ring-[#5a4bda]"
+                      className="rounded border-gray-300 text-[#008744] focus:ring-[#008744]"
                       checked={selectedAcademics.designations.includes(des._id)}
                       onChange={() => handleAcademicSelect('designations', des._id)}
                     />
@@ -532,17 +532,17 @@ function CreateCollege() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-5">
                <div className="sm:col-span-2">
                   <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Principal Name</label>
-                  <input type="text" name="principalName" value={formData.principalName} onChange={handleInputChange} placeholder="Enter principal name" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="text" name="principalName" value={formData.principalName} onChange={handleInputChange} placeholder="Enter principal name" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                </div>
                
                <div>
                   <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Email</label>
-                  <input type="email" name="principalEmail" value={formData.principalEmail} onChange={handleInputChange} placeholder="Enter email" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="email" name="principalEmail" value={formData.principalEmail} onChange={handleInputChange} placeholder="Enter email" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                </div>
 
                <div>
                   <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Qualification</label>
-                  <input type="text" name="principalQualification" value={formData.principalQualification} onChange={handleInputChange} placeholder="Enter qualification" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="text" name="principalQualification" value={formData.principalQualification} onChange={handleInputChange} placeholder="Enter qualification" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                </div>
             </div>
           </div>
@@ -553,22 +553,22 @@ function CreateCollege() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-5">
                <div>
                   <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Admin Name<span className="text-red-500">*</span></label>
-                  <input type="text" name="adminName" value={formData.adminName} onChange={handleInputChange} placeholder="Enter admin name" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="text" name="adminName" value={formData.adminName} onChange={handleInputChange} placeholder="Enter admin name" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                </div>
                
                <div>
                   <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Admin Email<span className="text-red-500">*</span></label>
-                  <input type="email" name="adminEmail" value={formData.adminEmail} onChange={handleInputChange} placeholder="Enter admin email" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="email" name="adminEmail" value={formData.adminEmail} onChange={handleInputChange} placeholder="Enter admin email" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                </div>
 
                <div>
                   <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Admin Mobile</label>
-                  <input type="text" name="adminMobile" value={formData.adminMobile} onChange={handleInputChange} placeholder="Enter mobile number" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="text" name="adminMobile" value={formData.adminMobile} onChange={handleInputChange} placeholder="Enter mobile number" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                </div>
 
                <div>
                   <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Username<span className="text-red-500">*</span></label>
-                  <input type="text" name="username" value={formData.username} onChange={handleInputChange} placeholder="Enter username" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" />
+                  <input type="text" name="username" value={formData.username} onChange={handleInputChange} placeholder="Enter username" className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" />
                </div>
 
                <div className="sm:col-span-2">
@@ -580,7 +580,7 @@ function CreateCollege() {
                       value={formData.password}
                       onChange={handleInputChange}
                       placeholder="Enter password" 
-                      className="w-full pl-4 pr-10 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent transition-all" 
+                      className="w-full pl-4 pr-10 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent transition-all" 
                     />
                     <button 
                       type="button"
@@ -607,7 +607,7 @@ function CreateCollege() {
             type="button"
             onClick={handleSave}
             disabled={isSubmitting}
-            className="w-full sm:w-auto px-8 py-2.5 text-[13px] font-bold text-white bg-[#5a4bda] rounded-lg shadow-md shadow-indigo-500/20 hover:bg-[#4d3ecc] transition-colors disabled:opacity-70"
+            className="w-full sm:w-auto px-8 py-2.5 text-[13px] font-bold text-white bg-[#008744] rounded-lg shadow-md shadow-emerald-600/20 hover:bg-[#007338] transition-colors disabled:opacity-70"
           >
             {isSubmitting ? 'Saving...' : 'Save'}
           </button>
@@ -615,7 +615,7 @@ function CreateCollege() {
             type="button"
             onClick={handleSave}
             disabled={isSubmitting}
-            className="w-full sm:w-auto px-6 py-2.5 text-[13px] font-bold text-white bg-[#5a4bda] rounded-lg shadow-md shadow-indigo-500/20 hover:bg-[#4d3ecc] transition-colors disabled:opacity-70"
+            className="w-full sm:w-auto px-6 py-2.5 text-[13px] font-bold text-white bg-[#008744] rounded-lg shadow-md shadow-emerald-600/20 hover:bg-[#007338] transition-colors disabled:opacity-70"
           >
             {isSubmitting ? 'Saving...' : 'Save & Send Credentials'}
           </button>

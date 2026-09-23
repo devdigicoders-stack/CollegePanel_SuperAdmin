@@ -2,9 +2,18 @@
 
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #008744;
+  --color-primary-hover: #007338;
+  --color-accent: #FF7A00;
+  --color-accent-hover: #E66B00;
+  --color-sidebar: #05140D;
+  --color-navy: #04120C;
+}
+
 @layer base {
   body {
-    @apply font-['Inter',sans-serif] bg-gray-50 text-slate-800 antialiased;
+    @apply font-['Inter',sans-serif] bg-[#f8faf9] text-slate-800 antialiased selection:bg-[#FF7A00] selection:text-white;
   }
 }
 

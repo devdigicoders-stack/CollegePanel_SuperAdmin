@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
 import { 
@@ -196,7 +196,7 @@ function CollegeDetails() {
       case 'Students': return (
         <>
           <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.studentId}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#008744]">{item.studentId}</td>
           <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.studentName}</td>
           <td className="py-3 px-5 text-[13px] text-gray-600">{item.course}</td>
           <td className="py-3 px-5 text-[13px] text-gray-600">{new Date(item.enrollmentDate).toLocaleDateString('en-GB')}</td>
@@ -215,7 +215,7 @@ function CollegeDetails() {
       case 'Teachers': return (
         <>
           <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.name}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#008744]">{item.name}</td>
           <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.department}</td>
           <td className="py-3 px-5 text-[13px] text-gray-600">{item.qualification}</td>
           <td className="py-3 px-5 text-[13px] text-gray-600">{item.experience}</td>
@@ -224,7 +224,7 @@ function CollegeDetails() {
       case 'Departments': return (
         <>
           <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.name}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#008744]">{item.name}</td>
           <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.hod}</td>
           <td className="py-3 px-5 text-[13px] text-gray-600">{item.totalFaculty}</td>
         </>
@@ -232,7 +232,7 @@ function CollegeDetails() {
       case 'Hostel': return (
         <>
           <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.blockName}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#008744]">{item.blockName}</td>
           <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.capacity}</td>
           <td className="py-3 px-5 text-[13px] text-gray-600">{item.warden}</td>
         </>
@@ -240,7 +240,7 @@ function CollegeDetails() {
       case 'Library': return (
         <>
           <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.bookName}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#008744]">{item.bookName}</td>
           <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.author}</td>
           <td className="py-3 px-5 text-[13px] text-gray-600">{item.availableCopies}</td>
         </>
@@ -248,7 +248,7 @@ function CollegeDetails() {
       case 'Employees': return (
         <>
           <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.name}</td>
+          <td className="py-3 px-5 text-[13px] font-semibold text-[#008744]">{item.name}</td>
           <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.role}</td>
           <td className="py-3 px-5 text-[13px] text-gray-600">{item.department}</td>
         </>
@@ -270,7 +270,7 @@ function CollegeDetails() {
           <select 
             value={studentFilters.branch} 
             onChange={(e) => setStudentFilters(p => ({ ...p, branch: e.target.value }))}
-            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#5a4bda]"
+            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#008744]"
           >
             <option>All Branches</option>
             {studentFilterOptions.branches.map(b => <option key={b} value={b}>{b}</option>)}
@@ -279,7 +279,7 @@ function CollegeDetails() {
           <select 
             value={studentFilters.course} 
             onChange={(e) => setStudentFilters(p => ({ ...p, course: e.target.value }))}
-            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#5a4bda]"
+            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#008744]"
           >
             <option>All Courses</option>
             {studentFilterOptions.courses.map(c => <option key={c} value={c}>{c}</option>)}
@@ -288,7 +288,7 @@ function CollegeDetails() {
           <select 
             value={studentFilters.year} 
             onChange={(e) => setStudentFilters(p => ({ ...p, year: e.target.value }))}
-            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#5a4bda]"
+            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#008744]"
           >
             <option>All Years</option>
             {studentFilterOptions.years.map(y => <option key={y} value={y}>{y}</option>)}
@@ -297,7 +297,7 @@ function CollegeDetails() {
           <select 
             value={studentFilters.session} 
             onChange={(e) => setStudentFilters(p => ({ ...p, session: e.target.value }))}
-            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#5a4bda]"
+            className="flex-1 min-w-[150px] p-2 border border-gray-200 rounded-lg text-[13px] outline-none focus:border-[#008744]"
           >
             <option>All Sessions</option>
             {studentFilterOptions.sessions.map(s => <option key={s} value={s}>{s}</option>)}
@@ -351,9 +351,9 @@ function CollegeDetails() {
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">College Details</h1>
         <div className="flex items-center text-[12px] text-gray-500 font-medium">
-          <Link to="/dashboard" className="hover:text-[#5a4bda] transition-colors">Dashboard</Link>
+          <Link to="/dashboard" className="hover:text-[#008744] transition-colors">Dashboard</Link>
           <span className="mx-2">&gt;</span>
-          <Link to="/all-colleges" className="hover:text-[#5a4bda] transition-colors">Colleges</Link>
+          <Link to="/all-colleges" className="hover:text-[#008744] transition-colors">Colleges</Link>
           <span className="mx-2">&gt;</span>
           <span className="text-gray-800 font-semibold">{college.collegeName}</span>
         </div>
@@ -397,7 +397,7 @@ function CollegeDetails() {
               </div>
               <div className="flex text-[13px]">
                 <span className="text-gray-500 w-24 shrink-0">Website :</span>
-                <a href={college.website} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#5a4bda] hover:underline">
+                <a href={college.website} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#008744] hover:underline">
                   {college.website || 'N/A'}
                 </a>
               </div>
@@ -447,7 +447,7 @@ function CollegeDetails() {
             onClick={() => setActiveTab(tab)}
             className={`whitespace-nowrap px-4 py-2 text-[13px] font-bold rounded-lg transition-colors ${
               activeTab === tab 
-                ? 'bg-[#5a4bda] text-white shadow-sm' 
+                ? 'bg-[#008744] text-white shadow-sm' 
                 : 'bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-800'
             }`}
           >
@@ -545,7 +545,7 @@ function CollegeDetails() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl my-8">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-[#5a4bda] to-[#4536b3]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-[#008744] to-[#007338]">
               <h3 className="text-lg font-bold text-white">Student Details</h3>
               <button 
                 onClick={() => setSelectedStudent(null)}
@@ -558,14 +558,14 @@ function CollegeDetails() {
             {/* Content */}
             <div className="p-6 max-h-[75vh] overflow-y-auto custom-scrollbar">
               {/* Basic Info Card */}
-              <div className="bg-gradient-to-br from-[#5a4bda]/5 to-[#5a4bda]/10 rounded-xl p-6 mb-8">
+              <div className="bg-gradient-to-br from-[#008744]/5 to-[#008744]/10 rounded-xl p-6 mb-8">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 rounded-full bg-[#5a4bda] flex items-center justify-center text-white text-2xl font-bold border-2 border-[#5a4bda]/20 shadow-sm shrink-0">
+                  <div className="w-16 h-16 rounded-full bg-[#008744] flex items-center justify-center text-white text-2xl font-bold border-2 border-[#008744]/20 shadow-sm shrink-0">
                     {selectedStudent.studentName?.charAt(0).toUpperCase()}
                   </div>
                   <div>
                     <h4 className="text-xl font-bold text-gray-800">{selectedStudent.studentName}</h4>
-                    <p className="text-sm text-[#5a4bda] font-medium">{selectedStudent.course} {selectedStudent.branch ? `- ${selectedStudent.branch}` : ''}</p>
+                    <p className="text-sm text-[#008744] font-medium">{selectedStudent.course} {selectedStudent.branch ? `- ${selectedStudent.branch}` : ''}</p>
                   </div>
                   <div className="ml-auto">
                     <span className={`px-4 py-2 rounded-full text-xs font-bold tracking-wide inline-block ${
@@ -576,7 +576,7 @@ function CollegeDetails() {
                     </span>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm mt-4 pt-4 border-t border-[#5a4bda]/10">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm mt-4 pt-4 border-t border-[#008744]/10">
                   <div>
                     <span className="text-gray-500 font-medium">Enrollment No:</span>
                     <span className="ml-2 font-bold text-gray-800">{selectedStudent.studentId}</span>
@@ -597,7 +597,7 @@ function CollegeDetails() {
                 
                 {/* Personal Information */}
                 <div className="space-y-4">
-                  <h5 className="text-[13px] font-bold text-[#5a4bda] uppercase tracking-wider border-b border-gray-200 pb-2">Personal Information</h5>
+                  <h5 className="text-[13px] font-bold text-[#008744] uppercase tracking-wider border-b border-gray-200 pb-2">Personal Information</h5>
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -649,7 +649,7 @@ function CollegeDetails() {
                   {/* Portal Credentials */}
                   {(selectedStudent.username || selectedStudent.password) && (
                     <div className="pt-4 mt-4 border-t border-gray-100">
-                      <h6 className="text-[11px] font-semibold text-[#5a4bda] uppercase tracking-wider mb-3">Portal Credentials</h6>
+                      <h6 className="text-[11px] font-semibold text-[#008744] uppercase tracking-wider mb-3">Portal Credentials</h6>
                       <div className="flex gap-4">
                         <div className="flex-1 bg-gray-50 p-3 rounded-lg border border-gray-100">
                           <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">Username</label>
@@ -667,7 +667,7 @@ function CollegeDetails() {
                 <div className="space-y-8">
                   {/* Parent / Guardian Information */}
                   <div className="space-y-4">
-                    <h5 className="text-[13px] font-bold text-[#5a4bda] uppercase tracking-wider border-b border-gray-200 pb-2">Parent & Guardian Details</h5>
+                    <h5 className="text-[13px] font-bold text-[#008744] uppercase tracking-wider border-b border-gray-200 pb-2">Parent & Guardian Details</h5>
                     
                     <div className="grid grid-cols-2 gap-x-4 gap-y-4">
                       <div>
@@ -711,7 +711,7 @@ function CollegeDetails() {
 
                   {/* Academic Information */}
                   <div className="space-y-4">
-                    <h5 className="text-[13px] font-bold text-[#5a4bda] uppercase tracking-wider border-b border-gray-200 pb-2">Previous Education</h5>
+                    <h5 className="text-[13px] font-bold text-[#008744] uppercase tracking-wider border-b border-gray-200 pb-2">Previous Education</h5>
                     
                     <div className="grid grid-cols-2 gap-4">
                       <div className="col-span-2">
@@ -741,7 +741,7 @@ function CollegeDetails() {
 
               {/* Documents Section */}
               <div className="mt-8">
-                <h5 className="text-[13px] font-bold text-[#5a4bda] uppercase tracking-wider border-b border-gray-200 pb-2 mb-4">Uploaded Documents</h5>
+                <h5 className="text-[13px] font-bold text-[#008744] uppercase tracking-wider border-b border-gray-200 pb-2 mb-4">Uploaded Documents</h5>
                 {(!selectedStudent.documents || selectedStudent.documents.length === 0) ? (
                   <div className="text-center py-8 bg-gray-50 rounded-xl border border-gray-100 border-dashed">
                     <p className="text-gray-500 text-[13px] font-medium">No documents uploaded for this student.</p>
@@ -764,7 +764,7 @@ function CollegeDetails() {
                           </div>
                         </div>
                         {doc.url ? (
-                          <a href={doc.url.startsWith('http') ? doc.url : `${import.meta.env.VITE_API_URL.replace('/api', '')}${doc.url.startsWith('/') ? doc.url : '/' + doc.url}`} target="_blank" rel="noopener noreferrer" className="mt-auto block w-full text-center px-3 py-2 text-[12px] font-bold text-[#5a4bda] bg-[#5a4bda]/5 border border-[#5a4bda]/20 rounded-lg hover:bg-[#5a4bda] hover:text-white transition-all">
+                          <a href={doc.url.startsWith('http') ? doc.url : `${import.meta.env.VITE_API_URL.replace('/api', '')}${doc.url.startsWith('/') ? doc.url : '/' + doc.url}`} target="_blank" rel="noopener noreferrer" className="mt-auto block w-full text-center px-3 py-2 text-[12px] font-bold text-[#008744] bg-[#008744]/5 border border-[#008744]/20 rounded-lg hover:bg-[#008744] hover:text-white transition-all">
                             View Document
                           </a>
                         ) : (

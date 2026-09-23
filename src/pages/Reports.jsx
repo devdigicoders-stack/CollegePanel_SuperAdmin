@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, Download, Filter, FileSpreadsheet, Building2, UserCheck, Users, AlertCircle } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
@@ -211,7 +211,7 @@ function Reports() {
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Reports & Analytics</h1>
         <div className="flex items-center text-[12px] text-gray-500 font-medium">
-          <Link to="/dashboard" className="hover:text-[#5a4bda] transition-colors">Dashboard</Link>
+          <Link to="/dashboard" className="hover:text-[#008744] transition-colors">Dashboard</Link>
           <span className="mx-2">&gt;</span>
           <span className="text-gray-800 font-semibold">Reports</span>
         </div>
@@ -228,7 +228,7 @@ function Reports() {
                 onClick={() => handleTabChange(type.id)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13px] font-semibold transition-all ${
                   activeReport === type.id
-                    ? 'bg-[#5a4bda] text-white shadow-md shadow-indigo-500/20'
+                    ? 'bg-[#008744] text-white shadow-md shadow-emerald-600/20'
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`}
               >
@@ -245,7 +245,7 @@ function Reports() {
           {/* Filters Section */}
           <div className="bg-white rounded-xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100 p-6">
             <div className="flex items-center gap-2 mb-6">
-              <Filter size={18} className="text-[#5a4bda]" />
+              <Filter size={18} className="text-[#008744]" />
               <h3 className="text-[15px] font-bold text-gray-800">Filter Criteria</h3>
             </div>
             
@@ -255,7 +255,7 @@ function Reports() {
                 <select 
                   value={selectedCollege}
                   onChange={(e) => setSelectedCollege(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent outline-none cursor-pointer"
+                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent outline-none cursor-pointer"
                 >
                   <option value="all">All Colleges</option>
                   {colleges.map(c => (
@@ -270,7 +270,7 @@ function Reports() {
                   type="date" 
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent outline-none" 
+                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent outline-none" 
                 />
               </div>
               
@@ -280,7 +280,7 @@ function Reports() {
                   type="date" 
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#5a4bda] focus:border-transparent outline-none" 
+                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg text-[13px] text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#008744] focus:border-transparent outline-none" 
                 />
               </div>
             </div>
@@ -289,7 +289,7 @@ function Reports() {
               <button 
                 onClick={handleGenerate}
                 disabled={isGenerating}
-                className="px-6 py-2.5 text-[13px] font-bold text-white bg-[#5a4bda] rounded-lg shadow-md shadow-indigo-500/20 hover:bg-[#4d3ecc] transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="px-6 py-2.5 text-[13px] font-bold text-white bg-[#008744] rounded-lg shadow-md shadow-emerald-600/20 hover:bg-[#007338] transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isGenerating ? (
                   <span className="flex items-center gap-2">
@@ -358,7 +358,7 @@ function Reports() {
                       {generatedData.length > 0 ? generatedData.map((item, index) => (
                         <tr key={item._id} className="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
                           <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-                          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.collegeCode}</td>
+                          <td className="py-3 px-5 text-[13px] font-semibold text-[#008744]">{item.collegeCode}</td>
                           <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.collegeName}</td>
                           <td className="py-3 px-5 text-[13px] text-gray-600">{item.collegeType}</td>
                           <td className="py-3 px-5 text-[13px] text-gray-600">{item.adminName}</td>
@@ -397,7 +397,7 @@ function Reports() {
                       {generatedData.length > 0 ? generatedData.map((item, index) => (
                         <tr key={item._id} className="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
                           <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-                          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.studentId}</td>
+                          <td className="py-3 px-5 text-[13px] font-semibold text-[#008744]">{item.studentId}</td>
                           <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.studentName}</td>
                           <td className="py-3 px-5 text-[13px] text-gray-600">{item.collegeId?.collegeName || 'N/A'}</td>
                           <td className="py-3 px-5 text-[13px] text-gray-600">{item.course}</td>
@@ -436,7 +436,7 @@ function Reports() {
                       {generatedData.length > 0 ? generatedData.map((item, index) => (
                         <tr key={item._id} className="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
                           <td className="py-3 px-5 text-[13px] text-gray-600">{index + 1}</td>
-                          <td className="py-3 px-5 text-[13px] font-semibold text-[#5a4bda]">{item.referenceId}</td>
+                          <td className="py-3 px-5 text-[13px] font-semibold text-[#008744]">{item.referenceId}</td>
                           <td className="py-3 px-5 text-[13px] text-gray-800 font-medium">{item.entityName}</td>
                           <td className="py-3 px-5 text-[13px] text-gray-600">{item.collegeId?.collegeName || 'N/A'}</td>
                           <td className="py-3 px-5 text-[13px] text-gray-600">{new Date(item.date).toLocaleDateString('en-GB')}</td>
