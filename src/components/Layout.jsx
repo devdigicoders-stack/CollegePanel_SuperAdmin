@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Menu, User, ChevronDown, Home,
   Building2, FileText, 
-  Plus, X, LogOut, AlertTriangle, Sparkles
+  Plus, X, LogOut, AlertTriangle, Sparkles, Mail
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import axiosInstance from '../utils/axiosInstance';
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [newEnquiriesCount, setNewEnquiriesCount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -19,6 +21,27 @@ const Layout = ({ children }) => {
     : null;
 
   const isActive = (path) => location.pathname === path;
+
+  // Track unread/new leads badge count
+  useEffect(() => {
+    const fetchLeadBadge = async () => {
+      try {
+        const res = await axiosInstance.get('/enquiries/stats');
+        if (res.data?.success) {
+          setNewEnquiriesCount(res.data.stats.new || 0);
+        }
+      } catch (e) {}
+    };
+    fetchLeadBadge();
+
+    const handleUpdate = () => fetchLeadBadge();
+    window.addEventListener('enquiries_updated', handleUpdate);
+    window.addEventListener('new_enquiry_received', handleUpdate);
+    return () => {
+      window.removeEventListener('enquiries_updated', handleUpdate);
+      window.removeEventListener('new_enquiry_received', handleUpdate);
+    };
+  }, []);
 
   const handleLogoutClick = () => {
     setShowLogoutModal(true);
@@ -131,6 +154,34 @@ const Layout = ({ children }) => {
           </div>
 
           <div className="mt-8">
+            <span className="px-8 text-[11px] font-bold text-emerald-400/70 tracking-wider uppercase flex items-center justify-between">
+              <span>GROWTH & LEADS</span>
+              {newEnquiriesCount > 0 && (
+                <span className="bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full mr-4">
+                  {newEnquiriesCount} NEW
+                </span>
+              )}
+            </span>
+            <ul className="mt-3 space-y-1.5 px-4">
+              <li>
+                <Link to="/enquiries" onClick={() => setIsSidebarOpen(false)}>
+                  <div className={`flex items-center justify-between px-4 py-2.5 text-[13px] rounded-lg cursor-pointer transition-all ${isActive('/enquiries') ? 'bg-gradient-to-r from-[#008744]/30 to-[#00A651]/20 text-emerald-300 font-semibold border border-emerald-500/40' : 'text-gray-300 hover:text-white hover:bg-emerald-950/40'}`}>
+                    <div className="flex items-center gap-3">
+                      <Mail size={18} className={isActive('/enquiries') ? 'text-emerald-400' : 'text-gray-400'} />
+                      <span className="font-medium">Website Enquiries</span>
+                    </div>
+                    {newEnquiriesCount > 0 && (
+                      <span className="bg-gradient-to-r from-[#FFA000] to-[#FF6000] text-white font-bold text-[10px] px-2 py-0.5 rounded-full shadow-xs animate-pulse">
+                        {newEnquiriesCount}
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="mt-8">
             <span className="px-8 text-[11px] font-bold text-emerald-400/70 tracking-wider uppercase">ACADEMICS</span>
             <ul className="mt-3 space-y-1.5 px-4">
               <li>
@@ -193,9 +244,21 @@ const Layout = ({ children }) => {
         {/* Header */}
         <header className="h-[70px] bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-10 shrink-0 shadow-sm">
           <div className="flex items-center gap-3 sm:gap-5">
-            {/* Title depends on route, but for now we let pages handle their own headers or we can keep it dynamic */}
+            <button 
+              className="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer"
+              onClick={() => setIsSidebarOpen(true)}
+              aria-label="Open sidebar"
+            >
+              <Menu size={22} />
+            </button>
             <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight hidden sm:block">
-              {location.pathname === '/create-college' ? 'Create College' : 'Dashboard'}
+              {location.pathname === '/create-college' 
+                ? 'Create College' 
+                : location.pathname === '/enquiries'
+                ? 'Website Enquiries & Leads'
+                : location.pathname === '/upgrade-requests'
+                ? 'Upgrade Requests'
+                : 'Dashboard'}
             </h1>
           </div>
           

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { SocketProvider } from './context/SocketContext';
 import Layout from './components/Layout';
 import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './pages/Dashboard';
@@ -13,36 +14,40 @@ import AllAdmins from './pages/AllAdmins';
 import Login from './pages/Login';
 import MasterAcademics from './pages/MasterAcademics';
 import UpgradeRequests from './pages/UpgradeRequests';
+import Enquiries from './pages/Enquiries';
 
 function App() {
   return (
     <Router>
-      <Toaster position="top-right" />
-      <Routes>
-        {/* Login - outside Layout (no sidebar/header) */}
-        <Route path="/login" element={<Login />} />
+      <SocketProvider>
+        <Toaster position="top-right" />
+        <Routes>
+          {/* Login - outside Layout (no sidebar/header) */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Protected Routes - inside Layout */}
-        <Route path="/*" element={
-          <PrivateRoute>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/create-college" element={<CreateCollege />} />
-                <Route path="/edit-college/:id" element={<EditCollege />} />
-                <Route path="/all-colleges" element={<AllColleges />} />
-                <Route path="/college-details/:id" element={<CollegeDetails />} />
-                <Route path="/upgrade-requests" element={<UpgradeRequests />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route path="/all-admins" element={<AllAdmins />} />
-                <Route path="/master-academics" element={<MasterAcademics />} />
-              </Routes>
-            </Layout>
-          </PrivateRoute>
-        } />
-      </Routes>
+          {/* Protected Routes - inside Layout */}
+          <Route path="/*" element={
+            <PrivateRoute>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/enquiries" element={<Enquiries />} />
+                  <Route path="/create-college" element={<CreateCollege />} />
+                  <Route path="/edit-college/:id" element={<EditCollege />} />
+                  <Route path="/all-colleges" element={<AllColleges />} />
+                  <Route path="/college-details/:id" element={<CollegeDetails />} />
+                  <Route path="/upgrade-requests" element={<UpgradeRequests />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/reports" element={<Reports />} />
+                  <Route path="/all-admins" element={<AllAdmins />} />
+                  <Route path="/master-academics" element={<MasterAcademics />} />
+                </Routes>
+              </Layout>
+            </PrivateRoute>
+          } />
+        </Routes>
+      </SocketProvider>
     </Router>
   );
 }
